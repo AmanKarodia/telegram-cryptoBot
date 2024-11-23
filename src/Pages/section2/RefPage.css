@@ -1,0 +1,8 @@
+.dot232 {
+    width: 10px;
+    height: 10px;
+    background-color: green;
+    border-radius: 50%;
+    position: absolute;
+    animation: blink 1s infinite;
+  }

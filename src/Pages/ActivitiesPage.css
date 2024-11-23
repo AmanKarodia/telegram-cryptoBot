@@ -1,0 +1,63 @@
+.top-glow {
+  box-shadow: 0 -26px 20px rgba(243, 186, 47, 0.3);
+}
+
+/* Define the keyframes for the blinking animation */
+@keyframes blink {
+  0% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0;
+  }
+
+  100% {
+    opacity: 1;
+  }
+}
+
+/* Apply the animation to the dot class */
+.dot {
+  width: 10px;
+  height: 10px;
+  background-color: green;
+  border-radius: 50%;
+  position: absolute;
+  top: 50%;
+  right: 7rem;
+  animation: blink 1s infinite;
+  transform: translateY(-50%)
+}
+
+.dot232 {
+  width: 8px;
+  height: 8px;
+  background-color: red;
+  border-radius: 50%;
+  position: absolute;
+  top: 26%;
+  right: 5%;
+  animation: blink 1s infinite;
+  transform: translateY(-50%)
+}
+
+.right242 {
+  position: absolute;
+  display: flex;
+  bottom: 0.3rem;
+  transform: translateX(8rem);
+}
+
+
+@keyframes float {
+  0% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  100% {
+    opacity: 0;
+    transform: translateY(-50px);
+  }
+}
