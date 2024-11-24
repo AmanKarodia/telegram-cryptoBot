@@ -17,7 +17,22 @@ interface UserData {
 
 const App: React.FC = () => {
   const navigate = useNavigate();
-  const [user, setUser] = useState<UserData | null>(null);
+  const [user, setUser] = useState<any>(null);
+
+  useEffect(() => {
+    // Ensure the Telegram WebApp object is available
+    if (window.Telegram?.WebApp) {
+      const userInfo = window.Telegram.WebApp.initDataUnsafe?.user;
+
+      if (userInfo) {
+        setUser(userInfo); // Set the user info in state
+      } else {
+        console.warn("User info is not available.");
+      }
+    } else {
+      console.error("Telegram WebApp SDK is not available.");
+    }
+  }, []);
 
   const levelNames = [
     "Bronze",    // From 0 to 4999 coins
@@ -52,7 +67,7 @@ const App: React.FC = () => {
   const [resetTime, setResetTime] = useState<number>(() => initializeResetTime());
   //const [claimedPoints, setClaimedPoints] = useState(0); // Points that have been claimed
 
-  const pointsToAdd = 5;
+  const pointsToAdd = 2;
   const profitPerHour = 100;
 
   // Initialize state with the value from localStorage or default to 0
@@ -74,7 +89,12 @@ const App: React.FC = () => {
 
    // Update localStorage whenever dailyTapsLeft changes
    useEffect(() => {
-    localStorage.setItem("dailyTapsLeft", dailyTapsLeft.toString());
+    const savedTaps = localStorage.getItem("dailyTapsLeft");
+  }, [dailyTapsLeft]);
+
+   // Update localStorage whenever PointsToAdd changes
+   useEffect(() => {
+    const savedTaps = localStorage.getItem("dailyTapsLeft");
   }, [dailyTapsLeft]);
 
   
@@ -187,34 +207,12 @@ const App: React.FC = () => {
         const nextResetTime = getNextResetTime();
         setResetTime(nextResetTime);
         localStorage.setItem("resetTime", nextResetTime.toString());
+        localStorage.setItem("dailyTapsLeft", "1500");
       }
     }, 1000); // Check every second
 
     return () => clearInterval(interval);
   }, [resetTime]);
-
-  const loadTelegramSDK = (): Promise<void> => {
-    return new Promise((resolve, reject) => {
-      const script = document.createElement("script");
-      script.src = "https://telegram.org/js/telegram-web-app.js";
-      script.async = true;
-      script.onload = () => resolve();
-      script.onerror = () => reject(new Error("Failed to load Telegram SDK"));
-      document.head.appendChild(script);
-    });
-  };
-
-  useEffect(() => {
-    if (window.Telegram?.WebApp) {
-      const tg = window.Telegram.WebApp;
-      tg.expand();
-      const userData = tg.initDataUnsafe?.user;
-      if (userData) {
-        setUser(userData);
-      }
-    }
-  }, []);
-
 
   return (
     <div className="bg-black flex justify-center">
@@ -224,11 +222,9 @@ const App: React.FC = () => {
             <div className="p-1 rounded-lg bg-[#1d2025]">
             {/* <img src={gojo} alt="gojo" className="w-12 h-12"/> */}
             </div>
-            {user ? (
+            {/* {user ? (
         <div>
-          <p className="text-sm">
-            Welcome, {user.first_name} {user.last_name}!
-          </p>
+          <h2>Welcome, {user.first_name}!</h2>
           {user.photo_url && (
             <img
               src={user.photo_url}
@@ -239,7 +235,7 @@ const App: React.FC = () => {
         </div>
       ) : (
         <p className="text-sm">Loading user information...</p>
-      )}
+      )} */}
           </div>
           <div className="flex items-center justify-between space-x-4 mt-1">
             <div className="flex items-center w-1/3">
@@ -324,21 +320,21 @@ const App: React.FC = () => {
           <img src={LuckyWin} alt="Luckywin" className="w-8 h-8 mx-auto" />
           <p className="mt-1">LuckyWin</p></button>
         </div>
-        <div className="text-center text-[#85827d] w-1/5">
+        {/* <div className="text-center text-[#85827d] w-1/5">
           <button onClick={() => navigate('/MinePage')} >
           <img src={mine} alt="Mine" className="w-8 h-8 mx-auto" />
           <p className="mt-1">Mine</p></button>
-        </div>
+        </div> */}
         <div className="text-center text-[#85827d] w-1/5">
         <button onClick={() => navigate('/Activities')}>
           <img src={Activities} alt="Activities" className="w-8 h-8 mx-auto" />
           <p className="mt-1">Activities</p>
         </button>
         </div>
-        <div className="text-center text-[#85827d] w-1/5">
+        {/* <div className="text-center text-[#85827d] w-1/5">
           <img src={Wallet} alt="Wallet" className="w-8 h-8 mx-auto" />
           <p className="mt-1">Wallet</p>
-        </div>
+        </div> */}
       </div>
 
       {clicks.map((click) => (

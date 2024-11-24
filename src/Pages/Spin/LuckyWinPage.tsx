@@ -84,12 +84,12 @@ const LuckyWinPage = () => {
 
     if (reel1 === reel2 && reel2 === reel3) {
       resultElement.innerText = '🎉 You win! 🎉';
-      rewardElement.innerText = 'Reward: 2500 Coins!';
-      setPoints(points + 2500);
-    } else if (reel1 === reel2 || reel2 === reel3 || reel1 === reel3) {
-      resultElement.innerText = '✨ Almost there! ✨';
       rewardElement.innerText = 'Reward: 500 Coins!';
       setPoints(points + 500);
+    } else if (reel1 === reel2 || reel2 === reel3 || reel1 === reel3) {
+      resultElement.innerText = '✨ Almost there! ✨';
+      rewardElement.innerText = 'Reward: 100 Coins!';
+      setPoints(points + 100);
     } else {
       resultElement.innerText = 'Try again!';
       rewardElement.innerText = '';
@@ -111,11 +111,11 @@ const LuckyWinPage = () => {
         <div className="px-4 z-10">
           <div className="flex items-center space-x-2 pt-4">
             <div className="p-1 rounded-lg bg-[#1d2025]">
-              <img src={gojo} alt="gojo" className="w-12 h-12" />
+              {/* <img src={gojo} alt="gojo" className="w-12 h-12" /> */}
             </div>
-            <div>
+            {/* <div>
               <p className="text-sm">Aman (CEO)</p>
-            </div>
+            </div> */}
           </div>
           <div className="flex items-center justify-between space-x-4 mt-1">
             <div className="flex items-center w-1/3">
@@ -208,20 +208,20 @@ const LuckyWinPage = () => {
            <img src={LuckyWin} alt="Luckywin" className="w-8 h-8 mx-auto" />
            <p className="mt-1">LuckyWin</p>
          </div>
-         <div className="text-center text-[#85827d] w-1/5">
+         {/* <div className="text-center text-[#85827d] w-1/5">
            <button onClick={() => navigate('/MinePage')}>
            <img src={mine} alt="Mine" className="w-8 h-8 mx-auto" />
            <p className="mt-1">Mine</p></button>
-         </div>
+         </div> */}
          <div className="text-center text-[#85827d] w-1/5">
          <button onClick={() => navigate('/activities')}>
            <img src={Activities} alt="Activities" className="w-8 h-8 mx-auto" />
            <p className="mt-1">Activities</p></button>
          </div>
-         <div className="text-center text-[#85827d] w-1/5">
+         {/* <div className="text-center text-[#85827d] w-1/5">
            <img src={Wallet} alt="Wallet" className="w-8 h-8 mx-auto" />
            <p className="mt-1">Wallet</p>
-         </div>
+         </div> */}
        </div>
       </div>
     </div>

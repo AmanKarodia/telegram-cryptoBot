@@ -229,11 +229,11 @@ const RefPage: React.FC = () => {
           <img src={LuckyWin} alt="Luckywin" className="w-8 h-8 mx-auto" />
           <p className="mt-1">LuckyWin</p></button>
         </div>
-          <div className="text-center text-[#85827d] w-1/5">
+          {/* <div className="text-center text-[#85827d] w-1/5">
             <button onClick={() => navigate('/MinePage')}>
             <img src={mine} alt="Mine" className="w-8 h-8 mx-auto" />
             <p className="mt-1">Mine</p></button>
-          </div>
+          </div> */}
           <div className="text-center text-[#85827d] w-1/5">
             <img src={Activities} alt="Activities" className="w-8 h-8 mx-auto" />
             <p className="mt-1">Activities</p>

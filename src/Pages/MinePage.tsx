@@ -1,7 +1,6 @@
 import { useNavigate } from 'react-router-dom';
-import { Activities, Discipline, binanceLogo, dollarCoin, Earn, gojo, LuckyWin, mine, one, Wallet, Awareness, MEME_COIN, } from '../images';
+import { Activities, Discipline, binanceLogo, Earn, gojo, LuckyWin, mine, one, Wallet, Awareness, MEME_COIN, } from '../images';
 import React, { useState, useEffect } from 'react';
-import Info from '../icons/Info';
 import Settings from '../icons/Settings';   
 
 
@@ -39,6 +38,19 @@ const MinePage: React.FC = () => {
       const [points, setPoints] = useState(0);
       const profitPerHour = 100;
 
+      const [disciplinelevel, setDisciplineLevel] = useState<number>(() => {
+        const savedLevel = localStorage.getItem("disciplinelevel");
+        return savedLevel ? parseInt(savedLevel, 10) : 0;
+      });
+      const [patiencelevel, setPatienceLevel] = useState<number>(() => {
+        const savedLevel = localStorage.getItem("patiencelevel");
+        return savedLevel ? parseInt(savedLevel, 10) : 0;
+      });
+
+      const [claimedPoints, setClaimedPoints] = useState<number>(() => {
+        const savedPoints = localStorage.getItem("claimedPoints");
+        return savedPoints ? parseInt(savedPoints, 10) : 0;
+      });
 
       const calculateProgress = () => {
         if (levelIndex >= levelNames.length - 1) {
@@ -60,12 +72,12 @@ const MinePage: React.FC = () => {
         }
       }, [points, levelIndex, levelMinPoints, levelNames.length]);
     
-      const formatProfitPerHour = (profit: number) => {
-        if (profit >= 1000000000) return `+${(profit / 1000000000).toFixed(2)}B`;
-        if (profit >= 1000000) return `+${(profit / 1000000).toFixed(2)}M`;
-        if (profit >= 1000) return `+${(profit / 1000).toFixed(2)}K`;
-        return `+${profit}`;
-      };
+      // const formatProfitPerHour = (profit: number) => {
+      //   if (profit >= 1000000000) return `+${(profit / 1000000000).toFixed(2)}B`;
+      //   if (profit >= 1000000) return `+${(profit / 1000000).toFixed(2)}M`;
+      //   if (profit >= 1000) return `+${(profit / 1000).toFixed(2)}K`;
+      //   return `+${profit}`;
+      // };
     
       useEffect(() => {
         const pointsPerSecond = Math.floor(profitPerHour / 3600);
@@ -74,6 +86,72 @@ const MinePage: React.FC = () => {
         }, 1000);
         return () => clearInterval(interval);
       }, [profitPerHour]);
+
+      useEffect(() => {
+        // Sync state with localStorage changes
+        const savedPoints = localStorage.getItem("claimedPoints");
+        const savedLevel = localStorage.getItem("level");
+        if (savedPoints) setClaimedPoints(parseInt(savedPoints, 10));
+        if (savedLevel) setDisciplineLevel(parseInt(savedLevel, 10));
+        if (savedLevel) setPatienceLevel(parseInt(savedLevel, 10));
+      }, []);
+
+      const DisciplanehandleCardClick = (cardType: string) => {
+        const currentDailyTaps = parseInt(localStorage.getItem("dailyTapsLeft") || "1500", 10);
+    
+        if (disciplinelevel >= 10) {
+          alert("Maximum level reached! You can't upgrade further.");
+          return;
+        }
+    
+        if (claimedPoints >= 2000) {
+          // Deduct 1k points
+          const updatedPoints = claimedPoints - 2000;
+          setClaimedPoints(updatedPoints);
+          localStorage.setItem("claimedPoints", updatedPoints.toString());
+    
+          // Increase daily taps by 100
+          const updatedDailyTaps = currentDailyTaps + 100;
+          localStorage.setItem("dailyTapsLeft", updatedDailyTaps.toString());
+    
+          // Increment level
+          const newLevel = disciplinelevel + 1;
+          localStorage.setItem("disciplinelevel", newLevel.toString());
+    
+          alert(`Successfully upgraded ${cardType} to level ${newLevel}!`);
+        } else {
+          alert("Not enough points!");
+        }
+      };
+
+      const PatiencehandleCardClick = (cardType: string) => {
+        const currentPointsToAdd = parseInt(localStorage.getItem("PointsToAdd") || "2", 10);
+    
+        if (patiencelevel >= 10) {
+          alert("Maximum level reached! You can't upgrade further.");
+          return;
+        }
+    
+        if (claimedPoints >= 5000) {
+          // Deduct 1k points
+          const updatedPoints = claimedPoints - 5000;
+          setClaimedPoints(updatedPoints);
+          localStorage.setItem("claimedPoints", updatedPoints.toString());
+    
+          // Increase coin collection by 1
+          const updatedPointsToAdd = currentPointsToAdd + 1;
+          localStorage.setItem("PointsToAdd", updatedPointsToAdd.toString());
+    
+          // Increment level
+          const newLevel = patiencelevel + 1;
+          localStorage.setItem("patiencelevel", newLevel.toString());
+    
+          alert(`Successfully upgraded ${cardType} to level ${newLevel}!`);
+        } else {
+          alert("Not enough points!");
+        }
+      };
+
 
   return (
     <div className="bg-black flex justify-center">
@@ -87,8 +165,8 @@ const MinePage: React.FC = () => {
               <p className="text-sm">Aman (CEO)</p>
             </div>
             {/* <div className="flex items-center bg-[#272a2f] px-3 py-1 rounded-full translate-x-44">
-              <img src={memeCoin} alt="dollarCoin" className="w-6 h-6 mr-2" />
-              <p className="text-yellow-400">{points.toLocaleString()}</p>
+              <img src={MEME_COIN} alt="dollarCoin" className="w-6 h-6 mr-2" />
+              <p className="text-yellow-400">{claimedPoints}</p>
             </div> */}
           </div>
           <div className="flex items-center justify-between space-x-4 mt-1">
@@ -111,9 +189,8 @@ const MinePage: React.FC = () => {
               <div className="flex-1 text-center">
                 <p className="text-xs text-[#85827d] font-medium">Profit per hour</p>
                 <div className="flex items-center justify-center space-x-1">
-                  <img src={dollarCoin} alt="Dollar Coin" className="w-[18px] h-[18px]" />
-                  <p className="text-sm">{formatProfitPerHour(profitPerHour)}</p>
-                  <Info size={20} className="text-[#43433b]" />
+                <img src={MEME_COIN} alt="dollarCoin" className="w-5 h-5 mr-2" />
+                <p className="text-yellow-400">{claimedPoints}</p>
                 </div>
               </div>
               <div className="h-[32px] w-[2px] bg-[#43433b] mx-2"></div>
@@ -144,7 +221,10 @@ const MinePage: React.FC = () => {
         {/*s Card Section */}
       <div className="p-8 grid grid-cols-2 gap-4 mb-20">
         {/* Card 1: Patience */}
-        <div className="bg-[#2b2b2b] p-5 rounded-2xl text-center max-w-xs sm:max-w-sm md:max-w-md lg:max-w-lg mx-auto">
+        <div 
+        onClick={() => PatiencehandleCardClick("Patience")}
+        className="bg-[#2b2b2b] p-5 rounded-2xl text-center max-w-xs sm:max-w-sm md:max-w-md lg:max-w-lg mx-auto"
+        >
         {/* Icon */}
         <img
           src={one}
@@ -170,16 +250,19 @@ const MinePage: React.FC = () => {
 
         {/* Level and Coin Info */}
         <div className="flex justify-between items-center translate-y-[-1.5rem] sm:translate-y-[-2rem] text-[12px] sm:text-[14px]">
-          <span className="text-gray-400 text-base sm:text-xl ml-4">lvl 0</span>
+          <span className="text-gray-400 text-base sm:text-xl ml-4">lvl {patiencelevel}</span>
           <div className="flex items-center">
-            <span className="text-yellow-400 text-base sm:text-xl">1k</span>
+            <span className="text-yellow-400 text-base sm:text-xl">5k</span>
             <img src={MEME_COIN} alt="Dollar Coin" className="w-[12px] sm:w-[15px] h-[12px] sm:h-[15px] translate-x-[-2rem] sm:translate-x-[-3rem]" />
           </div>
         </div>
       </div>
 
         {/* Card 2: Discipline */}
-        <div className="bg-[#2b2b2b] p-5 rounded-2xl text-center max-w-xs sm:max-w-sm md:max-w-md lg:max-w-lg mx-auto">
+        <div 
+        onClick={() => DisciplanehandleCardClick("Discipline")}
+        className="bg-[#2b2b2b] p-5 rounded-2xl text-center max-w-xs sm:max-w-sm md:max-w-md lg:max-w-lg mx-auto"
+        >
         {/* Icon */}
         <img
           src={Discipline}
@@ -205,55 +288,19 @@ const MinePage: React.FC = () => {
 
         {/* Level and Coin Info */}
         <div className="flex justify-between items-center translate-y-[-1.5rem] sm:translate-y-[-2rem] text-[12px] sm:text-[14px]">
-          <span className="text-gray-400 text-base sm:text-xl ml-4">lvl 0</span>
+          <span className="text-gray-400 text-base sm:text-xl ml-4">
+            lvl {disciplinelevel}
+          </span>
           <div className="flex items-center">
-            <span className="text-yellow-400 text-base sm:text-xl">1k</span>
+            <span className="text-yellow-400 text-base sm:text-xl">2k</span>
             <img src={MEME_COIN} alt="Dollar Coin" className="w-[12px] sm:w-[15px] h-[12px] sm:h-[15px] translate-x-[-2rem] sm:translate-x-[-3rem]" />
-                </div>
-              </div>
             </div>
-
-
-        {/* Card 3: Awareness */}
-        <div className="bg-[#2b2b2b] p-5 rounded-2xl text-center max-w-xs sm:max-w-sm md:max-w-md lg:max-w-lg mx-auto">
-        {/* Icon */}
-        <img
-          src={Awareness}
-          alt="Awareness"
-          className="mx-auto  w-12 sm:w-16 h-12 sm:h-16"
-        />
-
-        {/* Title */}
-        <h2 className="mt-5 text-[20px] sm:text-[24px] text-white">Awareness</h2>
-
-        {/* Profit per hour */}
-        <p className="text-gray-400 flex justify-center items-center mt-1 space-x-2 text-[12px]">
-          <span className="text-[12px]">Profit per hour</span>
-          <img src={MEME_COIN} alt="Dollar Coin" className="w-[15px] h-[15px]" />
-          <span>+70</span>
-        </p>
-
-        {/* Divider */}
-        <div className="h-[1px] bg-[#444444] rounded-lg mt-5"></div>
-        
-        {/* Small line */}
-        <div className="h-[25px] sm:h-[35px] w-[2px] bg-[#43433b] mx-auto mt-2"></div>
-
-        {/* Level and Coin Info */}
-        <div className="flex justify-between items-center translate-y-[-1.5rem] sm:translate-y-[-2rem] text-[12px] sm:text-[14px]">
-          <span className="text-gray-400 text-base sm:text-xl ml-4">lvl 0</span>
-          <div className="flex items-center">
-            <span className="text-yellow-400 text-base sm:text-xl">1k</span>
-            <img src={MEME_COIN} alt="Dollar Coin" className="w-[12px] sm:w-[15px] h-[12px] sm:h-[15px] translate-x-[-2rem] sm:translate-x-[-3rem]" />
-                </div>
-              </div>
-            </div>
-
-
           </div>
         </div>
       </div>
     </div>
+  </div>
+</div>
 
       {/* Bottom Navigation */}
       <div className="fixed bottom-0 left-1/2 transform -translate-x-1/2 w-[calc(100%-2rem)] max-w-xl bg-[#272a2f] flex justify-around items-center z-50 rounded-3xl text-xs">
