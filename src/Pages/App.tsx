@@ -79,7 +79,7 @@ const App: React.FC = () => {
    // Initialize dailyTapsLeft from localStorage or default to 1500
    const [dailyTapsLeft, setDailyTapsLeft] = useState<number>(() => {
     const savedTaps = localStorage.getItem("dailyTapsLeft");
-    return savedTaps ? parseInt(savedTaps, 10) : 1500;
+    return savedTaps ? parseInt(savedTaps, 10) : 500;
   });
 
   // Update localStorage whenever claimedPoints changes
@@ -202,7 +202,7 @@ const App: React.FC = () => {
         const nextResetTime = getNextResetTime();
         setResetTime(nextResetTime);
         localStorage.setItem("resetTime", nextResetTime.toString());
-        localStorage.setItem("dailyTapsLeft", "1500");
+        localStorage.setItem("dailyTapsLeft", "500");
       }
     }, 1000); // Check every second
 
