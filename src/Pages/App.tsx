@@ -87,14 +87,9 @@ const App: React.FC = () => {
     localStorage.setItem("claimedPoints", claimedPoints.toString());
   }, [claimedPoints]);
 
-   // Update localStorage whenever dailyTapsLeft changes
-   useEffect(() => {
-    const savedTaps = localStorage.getItem("dailyTapsLeft");
-  }, [dailyTapsLeft]);
-
-   // Update localStorage whenever PointsToAdd changes
-   useEffect(() => {
-    const savedTaps = localStorage.getItem("dailyTapsLeft");
+  useEffect(() => {
+    // Save the updated value of dailyTapsLeft to localStorage
+    localStorage.setItem("dailyTapsLeft", dailyTapsLeft.toString());
   }, [dailyTapsLeft]);
 
   
