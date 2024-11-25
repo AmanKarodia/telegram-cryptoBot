@@ -68,13 +68,33 @@ const LuckyWinPage = () => {
 
   // Spin reels with random symbols and update UI
   const spinReels = () => {
-    const reel1 = symbols[Math.floor(Math.random() * symbols.length)];
-    const reel2 = symbols[Math.floor(Math.random() * symbols.length)];
-    const reel3 = symbols[Math.floor(Math.random() * symbols.length)];
-
-    // Update state to display the new symbols
-    setReelSymbols([reel1, reel2, reel3]);
-    checkWin(reel1, reel2, reel3);
+    const rollingDuration = 2000; // Total rolling time in milliseconds
+    const updateInterval = 100; // Interval between updates in milliseconds
+    const endTime = Date.now() + rollingDuration;
+  
+    const roll = () => {
+      if (Date.now() >= endTime) {
+        // Stop rolling and set the final symbols
+        const reel1 = symbols[Math.floor(Math.random() * symbols.length)];
+        const reel2 = symbols[Math.floor(Math.random() * symbols.length)];
+        const reel3 = symbols[Math.floor(Math.random() * symbols.length)];
+        setReelSymbols([reel1, reel2, reel3]);
+        checkWin(reel1, reel2, reel3);
+        return;
+      }
+  
+      // Update with random symbols to simulate rolling
+      const randomReel1 = symbols[Math.floor(Math.random() * symbols.length)];
+      const randomReel2 = symbols[Math.floor(Math.random() * symbols.length)];
+      const randomReel3 = symbols[Math.floor(Math.random() * symbols.length)];
+      setReelSymbols([randomReel1, randomReel2, randomReel3]);
+  
+      // Schedule the next update
+      setTimeout(roll, updateInterval);
+    };
+  
+    // Start rolling
+    roll();
   };
 
   // Check win conditions and set reward messages
@@ -208,11 +228,11 @@ const LuckyWinPage = () => {
            <img src={LuckyWin} alt="Luckywin" className="w-8 h-8 mx-auto" />
            <p className="mt-1">LuckyWin</p>
          </div>
-         {/* <div className="text-center text-[#85827d] w-1/5">
+         <div className="text-center text-[#85827d] w-1/5">
            <button onClick={() => navigate('/MinePage')}>
            <img src={mine} alt="Mine" className="w-8 h-8 mx-auto" />
            <p className="mt-1">Mine</p></button>
-         </div> */}
+         </div>
          <div className="text-center text-[#85827d] w-1/5">
          <button onClick={() => navigate('/activities')}>
            <img src={Activities} alt="Activities" className="w-8 h-8 mx-auto" />
