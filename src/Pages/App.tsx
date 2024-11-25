@@ -258,10 +258,10 @@ const App: React.FC = () => {
                 <p className="text-[10px] font-medium text-center text-gray-400 mt-2">{dailyTapsLeft}</p>
               </div>
 
-              <div className="bg-[#272a2f] rounded-lg px-4 py-3 w-full relative">
+              {/* <div className="bg-[#272a2f] rounded-lg px-4 py-3 w-full relative">
                 <img src={rocket} alt="boosters" className="mx-auto w-8 h-8" />
                 <p className="text-[10px] text-center text-white mt-2">Get Boosters</p>
-              </div>
+              </div> */}
 
               <div className="bg-[#272a2f] rounded-lg px-4 py-3 w-full relative">
                 <img src={time} alt="boosters" className="mx-auto w-5 h-5" />
