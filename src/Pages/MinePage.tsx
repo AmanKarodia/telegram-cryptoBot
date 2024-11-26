@@ -167,11 +167,11 @@ const MinePage: React.FC = () => {
         <div className="px-4 z-10">
           <div className="flex items-center space-x-2 pt-4">
             <div className="p-1 rounded-lg bg-[#1d2025]">
-            <img src={gojo} alt="gojo" className="w-12 h-12"/>
+            {/* <img src={gojo} alt="gojo" className="w-12 h-12"/> */}
             </div>
-            <div>
+            {/* <div>
               <p className="text-sm">Aman (CEO)</p>
-            </div>
+            </div> */}
             {/* <div className="flex items-center bg-[#272a2f] px-3 py-1 rounded-full translate-x-44">
               <img src={MEME_COIN} alt="dollarCoin" className="w-6 h-6 mr-2" />
               <p className="text-yellow-400">{claimedPoints}</p>
