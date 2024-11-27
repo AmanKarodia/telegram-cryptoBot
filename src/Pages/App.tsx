@@ -1,38 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import './App.css'
-import { Activities, binanceLogo, dailyReward, dollarCoin, Earn, gojo, LuckyWin, MEME_COIN, memeCoin, mine, rocket, time, Wallet } from '../images';
+import { Activities, binanceLogo, dailyReward, dollarCoin, Earn, LuckyWin, MEME_COIN, memeCoin, mine, rocket, time } from '../images';
 import Info from '../icons/Info';
 import Settings from '../icons/Settings';
 import { useNavigate } from 'react-router-dom';
 import { getNextResetTime, shouldResetClicks, initializeResetTime, } from '../utils/timerUtils';
-
-interface UserData {
-  id: number;
-  first_name: string;
-  last_name?: string;
-  username?: string;
-  photo_url?: string;
-}
+import axios from "axios";
 
 
 const App: React.FC = () => {
   const navigate = useNavigate();
-  const [user, setUser] = useState<any>(null);
-
-  useEffect(() => {
-    // Ensure the Telegram WebApp object is available
-    if (window.Telegram?.WebApp) {
-      const userInfo = window.Telegram.WebApp.initDataUnsafe?.user;
-
-      if (userInfo) {
-        setUser(userInfo); // Set the user info in state
-      } else {
-        console.warn("User info is not available.");
-      }
-    } else {
-      console.error("Telegram WebApp SDK is not available.");
-    }
-  }, []);
 
   const levelNames = [
     "Bronze",    // From 0 to 4999 coins
@@ -66,8 +43,6 @@ const App: React.FC = () => {
   const [clicks, setClicks] = useState<{ id: number, x: number, y: number }[]>([]);
   const [resetTime, setResetTime] = useState<number>(() => initializeResetTime());
   //const [claimedPoints, setClaimedPoints] = useState(0); // Points that have been claimed
-
-  const pointsToAdd = 2;
   const profitPerHour = 100;
 
   // Initialize state with the value from localStorage or default to 0
@@ -82,6 +57,10 @@ const App: React.FC = () => {
     return savedTaps ? parseInt(savedTaps, 10) : 500;
   });
 
+  const [pointsToAdd, setPointsToAdd] = useState<number>(() => {
+    return parseInt(localStorage.getItem("PointsToAdd") || "0", 10);
+  });
+
   // Update localStorage whenever claimedPoints changes
   useEffect(() => {
     localStorage.setItem("claimedPoints", claimedPoints.toString());
@@ -91,7 +70,6 @@ const App: React.FC = () => {
     // Save the updated value of dailyTapsLeft to localStorage
     localStorage.setItem("dailyTapsLeft", dailyTapsLeft.toString());
   }, [dailyTapsLeft]);
-
   
   // Get any exsiting data in local storage
   // useEffect(() => {
@@ -128,10 +106,18 @@ const App: React.FC = () => {
       setTimeout(() => {
         card.style.transform = '';
       }, 100);
+
+      // Increase coin collection by 1
+      const updatedPointsToAdd = pointsToAdd;
+      setPointsToAdd(updatedPointsToAdd);
+      localStorage.setItem("PointsToAdd", updatedPointsToAdd.toString());
+
     
       // Update points and track the click position
       setPoints(points + pointsToAdd)
+      setPointsToAdd(updatedPointsToAdd);
       setClicks([...clicks, { id: Date.now(), x: e.pageX, y: e.pageY }]);
+      localStorage.setItem("PointsToAdd", updatedPointsToAdd.toString());
     
       // Decrease the number of taps left
       setDailyTapsLeft(dailyTapsLeft - 1);
@@ -208,6 +194,7 @@ const App: React.FC = () => {
 
     return () => clearInterval(interval);
   }, [resetTime]);
+  
 
   return (
     <div className="bg-black flex justify-center">
@@ -258,7 +245,9 @@ const App: React.FC = () => {
                 </div>
               </div>
               <div className="h-[32px] w-[2px] bg-[#43433b] mx-2"></div>
+              <button onClick={() => navigate('/SettingsPage')}>
               <Settings className="text-white" />
+              </button>
             </div>
           </div>
         </div>
@@ -272,10 +261,10 @@ const App: React.FC = () => {
                 <p className="text-[10px] font-medium text-center text-gray-400 mt-2">{dailyTapsLeft}</p>
               </div>
 
-              <div className="bg-[#272a2f] rounded-lg px-4 py-3 w-full relative">
+              {/* <div className="bg-[#272a2f] rounded-lg px-4 py-3 w-full relative">
                 <img src={rocket} alt="boosters" className="mx-auto w-8 h-8" />
                 <p className="text-[10px] text-center text-white mt-2">Get Boosters</p>
-              </div>
+              </div> */}
 
               <div className="bg-[#272a2f] rounded-lg px-4 py-3 w-full relative">
                 <img src={time} alt="boosters" className="mx-auto w-5 h-5" />
@@ -315,11 +304,11 @@ const App: React.FC = () => {
           <img src={LuckyWin} alt="Luckywin" className="w-8 h-8 mx-auto" />
           <p className="mt-1">LuckyWin</p></button>
         </div>
-        {/* <div className="text-center text-[#85827d] w-1/5">
+        <div className="text-center text-[#85827d] w-1/5">
           <button onClick={() => navigate('/MinePage')} >
           <img src={mine} alt="Mine" className="w-8 h-8 mx-auto" />
           <p className="mt-1">Mine</p></button>
-        </div> */}
+        </div>
         <div className="text-center text-[#85827d] w-1/5">
         <button onClick={() => navigate('/Activities')}>
           <img src={Activities} alt="Activities" className="w-8 h-8 mx-auto" />

@@ -1,5 +1,5 @@
 import { useNavigate } from 'react-router-dom';
-import { Activities, Discipline, binanceLogo, Earn, gojo, LuckyWin, mine, one, Wallet, Awareness, MEME_COIN, } from '../images';
+import { Activities, Discipline, binanceLogo, Earn, gojo, LuckyWin, mine, one, Wallet, MEME_COIN, } from '../images';
 import React, { useState, useEffect } from 'react';
 import Settings from '../icons/Settings';   
 
@@ -37,11 +37,13 @@ const MinePage: React.FC = () => {
       const [levelIndex, setLevelIndex] = useState(6);
       const [points, setPoints] = useState(0);
       const profitPerHour = 100;
+      //const pointsToAdd = 2;
 
       const [disciplinelevel, setDisciplineLevel] = useState<number>(() => {
         const savedLevel = localStorage.getItem("disciplinelevel");
         return savedLevel ? parseInt(savedLevel, 10) : 0;
       });
+
       const [patiencelevel, setPatienceLevel] = useState<number>(() => {
         const savedLevel = localStorage.getItem("patiencelevel");
         return savedLevel ? parseInt(savedLevel, 10) : 0;
@@ -124,33 +126,39 @@ const MinePage: React.FC = () => {
         }
       };
 
+      const [pointsToAdd, setPointsToAdd] = useState<number>(() => {
+        return parseInt(localStorage.getItem("PointsToAdd") || "2", 10);
+      });
+
       const PatiencehandleCardClick = (cardType: string) => {
-        const currentPointsToAdd = parseInt(localStorage.getItem("PointsToAdd") || "2", 10);
-    
         if (patiencelevel >= 10) {
           alert("Maximum level reached! You can't upgrade further.");
           return;
         }
-    
+      
         if (claimedPoints >= 5000) {
-          // Deduct 1k points
-          const updatedPoints = claimedPoints - 5000;
-          setClaimedPoints(updatedPoints);
-          localStorage.setItem("claimedPoints", updatedPoints.toString());
-    
+          // Deduct 5000 points
+          const updatedClaimedPoints = claimedPoints - 5000;
+          setClaimedPoints(updatedClaimedPoints);
+          localStorage.setItem("claimedPoints", updatedClaimedPoints.toString());
+      
           // Increase coin collection by 1
-          const updatedPointsToAdd = currentPointsToAdd + 1;
+          const updatedPointsToAdd = pointsToAdd + 1;
+          setPointsToAdd(updatedPointsToAdd);
           localStorage.setItem("PointsToAdd", updatedPointsToAdd.toString());
-    
+          console.log("Updated PointsToAdd:", updatedPointsToAdd); // Debug log
+      
           // Increment level
-          const newLevel = patiencelevel + 1;
-          localStorage.setItem("patiencelevel", newLevel.toString());
-    
-          alert(`Successfully upgraded ${cardType} to level ${newLevel}!`);
+          const newPatienceLevel = patiencelevel + 1;
+          setPatienceLevel(newPatienceLevel);
+          localStorage.setItem("patiencelevel", newPatienceLevel.toString());
+      
+          alert(`Successfully upgraded ${cardType} to level ${newPatienceLevel}!`);
         } else {
           alert("Not enough points!");
         }
       };
+      
 
 
   return (
@@ -159,11 +167,11 @@ const MinePage: React.FC = () => {
         <div className="px-4 z-10">
           <div className="flex items-center space-x-2 pt-4">
             <div className="p-1 rounded-lg bg-[#1d2025]">
-            <img src={gojo} alt="gojo" className="w-12 h-12"/>
+            {/* <img src={gojo} alt="gojo" className="w-12 h-12"/> */}
             </div>
-            <div>
+            {/* <div>
               <p className="text-sm">Aman (CEO)</p>
-            </div>
+            </div> */}
             {/* <div className="flex items-center bg-[#272a2f] px-3 py-1 rounded-full translate-x-44">
               <img src={MEME_COIN} alt="dollarCoin" className="w-6 h-6 mr-2" />
               <p className="text-yellow-400">{claimedPoints}</p>
@@ -213,9 +221,9 @@ const MinePage: React.FC = () => {
                 <div className="dot232"></div>
                 <p>Business</p>
                 </button> */}
-                <button onClick={() => navigate('/SpecialsPage')} className="border-solid border-2 border-[#444444] rounded-lg flex-1 py-2 text-center hover:bg-transparent active:bg-gray-500 focus:outline-none text-white relative sm:py-4 sm:text-base text-sm">
+                {/* <button onClick={() => navigate('/SpecialsPage')} className="border-solid border-2 border-[#444444] rounded-lg flex-1 py-2 text-center hover:bg-transparent active:bg-gray-500 focus:outline-none text-white relative sm:py-4 sm:text-base text-sm">
                 <p>Specials</p>
-                </button>
+                </button> */}
             </div>
 
         {/*s Card Section */}
@@ -324,10 +332,10 @@ const MinePage: React.FC = () => {
           <img src={Activities} alt="Activities" className="w-8 h-8 mx-auto" />
           <p className="mt-1">Activities</p></button>
         </div>
-        <div className="text-center text-[#85827d] w-1/5">
+        {/* <div className="text-center text-[#85827d] w-1/5">
           <img src={Wallet} alt="Wallet" className="w-8 h-8 mx-auto" />
           <p className="mt-1">Wallet</p>
-        </div>
+        </div> */}
         </div>
         </div>
 

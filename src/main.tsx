@@ -6,6 +6,7 @@ import VideoPage from './Pages/section1/videoPage.tsx';
 import ActivitiesPage from './Pages/ActivitiesPage.tsx';
 import RefPage from './Pages/section2/RefPage.tsx';
 import MinePage from './Pages/MinePage.tsx';
+import SettingsPage from './Pages/SettingsPage.tsx';
 import LuckyWinPage from './Pages/Spin/LuckyWinPage.tsx';
 //import SpecialsPage from './Pages/Specials/SpecialsPage.tsx';
 import './index.css';
@@ -24,6 +25,7 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
         <Route path="/LuckyWinPage" element={<LuckyWinPage />} /> {/* Route for LuckyWinPage */}
         {/* <Route path="/SpecialsPage" element={<SpecialsPage />} /> Route for LuckyWinPage */}
         {/* <Route path="/BussinessPage" element={<BussinessPage />} /> Route for MinePageBussiness */}
+        <Route path="/SettingsPage" element={<SettingsPage />} /> {/* Route for SettingsPage */}
       </Routes>
     </Router>
   </React.StrictMode>,
