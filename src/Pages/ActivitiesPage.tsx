@@ -15,10 +15,10 @@ const ActivitiesPage: React.FC = () => {
   });
 
   const [pointsToAdd, setPointsToAdd] = useState(0);
-  // const [isVerified1, setIsVerified1] = useState(false);
-  // const [isVerified2, setIsVerified2] = useState(false);
-  // const [isVerified3, setIsVerified3] = useState(false);
-  // const [isVerified4, setIsVerified4] = useState(false);
+  const [isVerified1, setIsVerified1] = useState(false);
+  const [isVerified2, setIsVerified2] = useState(false);
+  const [isVerified3, setIsVerified3] = useState(false);
+  const [isVerified4, setIsVerified4] = useState(false);
   const [isNewSubscribe1, setIsNewSubscribe1] = useState(false);
   const [isNewSubscribe2, setIsNewSubscribe2] = useState(false);
   const [isNewSubscribe3, setIsNewSubscribe3] = useState(false);
@@ -54,24 +54,34 @@ const ActivitiesPage: React.FC = () => {
   //   }
   // };
 
-  const TelegramNewUser = () => {
-    window.open("https://t.me/ThoughGoldBullGroup");
-    setIsNewSubscribe1(true);
-  };
+  // const TelegramNewUser = () => {
+  //   window.open("https://t.me/ThoughGoldBullGroup");
+  //   setIsNewSubscribe1(true);
+  // };
 
-  const TwitterNewUser = () => {
-    window.open("https://x.com/though_goldbull");
-    setIsNewSubscribe2(true);
-  };
+  // const TwitterNewUser = () => {
+  //   window.open("https://x.com/though_goldbull");
+  //   setIsNewSubscribe2(true);
+  // };
 
-  const YouTubeNewUser = () => {
-    window.open("https://www.youtube.com/@ThoughGoldBull");
-    setIsNewSubscribe3(true);
-  };
+  // const YouTubeNewUser = () => {
+  //   window.open("https://www.youtube.com/@ThoughGoldBull");
+  //   setIsNewSubscribe3(true);
+  // };
 
-  const TelegramRef1 = () => {
-    window.open("https://t.me/beeharvestbot?start=6315760113_d0oIklLk");
-    setIsNewSubscribe4(true);
+  // const TelegramRef1 = () => {
+  //   window.open("https://t.me/beeharvestbot?start=6315760113_d0oIklLk");
+  //   setIsNewSubscribe4(true);
+  // };
+
+  const verifyTaskWithoutPassword = (
+    rewardKey: string,
+    setRewardMessage: React.Dispatch<React.SetStateAction<string>>,
+    setIsVerified: React.Dispatch<React.SetStateAction<boolean>>
+  ) => {
+    // Directly grant the reward
+    addPoints(rewardKey, setRewardMessage);
+    setIsVerified(true);
   };
 
 
@@ -108,12 +118,12 @@ const ActivitiesPage: React.FC = () => {
         </button>
       </div>
 
-      {/* <div className="border-solid border-2 border-[#444444] rounded-lg flex-1 py-2 text-center hover:bg-transparent active:bg-gray-500 focus:outline-none text-white relative sm:py-4 sm:text-base text-sm">
+      <div className="border-solid border-2 border-[#444444] rounded-lg flex-1 py-2 text-center hover:bg-transparent active:bg-gray-500 focus:outline-none text-white relative sm:py-4 sm:text-base text-sm">
         <button onClick={() => navigate('/RefPage')}>
           <img src={usercomments} alt="Referrals" className="w-6 h-6 absolute left-2 top-1/2 transform -translate-y-1/2 sm:left-8" />
           <p className="translate-x-2">Referrals</p>
         </button>
-      </div> */}
+      </div>
 
       </div>
 
@@ -134,7 +144,11 @@ const ActivitiesPage: React.FC = () => {
           <div className="flex space-x-2 flex-wrap px-12">
             <button
              disabled={isNewSubscribe1} 
-             onClick={TelegramNewUser}
+             onClick={() => {
+              window.open("https://t.me/ThoughGoldBullGroup", "_blank");
+              setIsNewSubscribe1(true);
+              verifyTaskWithoutPassword("reward1", setRewardMessage1, setIsVerified1);
+            }}
             className=" text-yellow-400 hover:text-white border border-yellow-400 hover:bg-yellow-500 focus:ring-4 focus:outline-none focus:ring-yellow-300 font-medium text-center mb-2 px-3 py-1 rounded text-xs sm:text-sm dark:border-yellow-300 dark:text-yellow-300 dark:hover:text-white dark:hover:bg-yellow-400 dark:focus:ring-yellow-900"
             >
               {isNewSubscribe1 ? "Completed" : "Perform"}
@@ -161,7 +175,11 @@ const ActivitiesPage: React.FC = () => {
           <div className="flex space-x-2 flex-wrap px-12">
           <button
              disabled={isNewSubscribe2} 
-             onClick={TwitterNewUser}
+             onClick={() => {
+              window.open("https://x.com/though_goldbull", "_blank");
+              setIsNewSubscribe2(true);
+              verifyTaskWithoutPassword("reward1", setRewardMessage2, setIsVerified2);
+            }}
              className=" text-yellow-400 hover:text-white border border-yellow-400 hover:bg-yellow-500 focus:ring-4 focus:outline-none focus:ring-yellow-300 font-medium text-center mb-2 px-3 py-1 rounded text-xs sm:text-sm dark:border-yellow-300 dark:text-yellow-300 dark:hover:text-white dark:hover:bg-yellow-400 dark:focus:ring-yellow-900"
             >
               {isNewSubscribe2 ? "Completed" : "Perform"}
@@ -188,7 +206,11 @@ const ActivitiesPage: React.FC = () => {
           <div className="flex space-x-2 flex-wrap px-12">
           <button
              disabled={isNewSubscribe3} 
-             onClick={YouTubeNewUser}
+             onClick={() => {
+              window.open("https://www.youtube.com/@ThoughGoldBull", "_blank");
+              setIsNewSubscribe3(true);
+              verifyTaskWithoutPassword("reward2", setRewardMessage3, setIsVerified3);
+            }}
              className=" text-yellow-400 hover:text-white border border-yellow-400 hover:bg-yellow-500 focus:ring-4 focus:outline-none focus:ring-yellow-300 font-medium text-center mb-2 px-3 py-1 rounded text-xs sm:text-sm dark:border-yellow-300 dark:text-yellow-300 dark:hover:text-white dark:hover:bg-yellow-400 dark:focus:ring-yellow-900"
             >
               {isNewSubscribe3 ? "Completed" : "Perform"}
@@ -203,7 +225,7 @@ const ActivitiesPage: React.FC = () => {
             </div>
             </div>
 
-        {/* Task Card 3 - YouTube */}
+        {/* Task Card 4 - ref1 */}
         <div className="bg-[#272a2f] p-4 mb-4 rounded-lg flex flex-col sm:flex-row justify-between items-start sm:items-center">
           <div className="flex items-center space-x-4 mb-4 sm:mb-0">
             <img src={Ref1} alt="YouTube" className="w-8 h-8" />
@@ -215,7 +237,11 @@ const ActivitiesPage: React.FC = () => {
           <div className="flex space-x-2 flex-wrap px-12">
           <button
              disabled={isNewSubscribe4} 
-             onClick={TelegramRef1}
+             onClick={() => {
+              window.open("https://t.me/beeharvestbot?start=6315760113_d0oIklLk", "_blank");
+              setIsNewSubscribe4(true);
+              verifyTaskWithoutPassword("reward2", setRewardMessage4, setIsVerified4);
+            }}
              className=" text-yellow-400 hover:text-white border border-yellow-400 hover:bg-yellow-500 focus:ring-4 focus:outline-none focus:ring-yellow-300 font-medium text-center mb-2 px-3 py-1 rounded text-xs sm:text-sm dark:border-yellow-300 dark:text-yellow-300 dark:hover:text-white dark:hover:bg-yellow-400 dark:focus:ring-yellow-900"
             >
               {isNewSubscribe4 ? "Completed" : "Perform"}
