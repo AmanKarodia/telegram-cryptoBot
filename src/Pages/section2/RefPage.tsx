@@ -13,10 +13,14 @@ const RefPage: React.FC = () => {
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const [points, setPoints] = useState(0);
   const [referrer, setReferrer] = useState<string | null>(null);
-  const [claimedPoints, setClaimedPoints] = useState(0);
   const handleOpenPopup = () => setIsPopupOpen(true);
   const handleClosePopup = () => setIsPopupOpen(false);
   const [user, setUser] = useState<any>(null);
+
+  const [claimedPoints, setClaimedPoints] = useState<number>(() => {
+    const savedPoints = localStorage.getItem("claimedPoints");
+    return savedPoints ? parseInt(savedPoints, 10) : 0;
+  });
 
   
   // Copy the referral link to the clipboard
