@@ -1,9 +1,9 @@
 import { Activities, youtubeicon, usercomments, Earn, Wallet, LuckyWin, rightArrow, copy, share, MEME_COIN } from '../../images';
 import { useNavigate } from 'react-router-dom';
 import React, {useState, useEffect} from 'react';
-import { auth, db } from '../firebase';
-import { setDoc, doc, getDoc } from 'firebase/firestore';
-
+import { db } from '../firebase';
+import { setDoc, doc, getDoc, increment } from 'firebase/firestore';
+import {getAuth, onAuthStateChanged } from "firebase/auth";
 
 
 const RefPage: React.FC = () => {
@@ -22,68 +22,121 @@ const RefPage: React.FC = () => {
     return savedPoints ? parseInt(savedPoints, 10) : 0;
   });
 
-  
-  // Copy the referral link to the clipboard
-  const copyLink = () => {
-    if (user) {
-      
-      const referrer = `https://t.me/ThoughGoldBullGroup?referral=${user.uid}`;
-      navigator.clipboard.writeText(referrer).then(() => {
-        setCopied(true); // Set copied state to true
-        setTimeout(() => setCopied(false), 5000); // Reset copied state after 2 seconds
-      }).catch((err) => {
-        console.error("Failed to copy link:", err); // Handle any error that might occur
-      });
-    }
-  };
-  
+    // Use Firebase Auth to detect user state
+    useEffect(() => {
+    const auth = getAuth();
+    const unsubscribe = onAuthStateChanged(auth, (firebaseUser) => {
+      if (firebaseUser) {
+        setUser(firebaseUser); // Set the actual authenticated user
+      } else {
+        setUser(null); // No user is authenticated
+      }
+    });
+
+    return () => unsubscribe(); // Clean up on unmount
+  }, []);
 
   const handleShareAndEarnPoints = async () => {
+    console.log("handleShareAndEarnPoints called");
+
     if (user) {
-      // Open the Telegram share link with the user's referral ID
-      const telegramLink = `https://t.me/ThoughGoldBullGroup?referral=${user.uid}`;
+      console.log("User detected:", user);
 
-      // Share the link (open in a new tab)
-      window.open(telegramLink, "_blank");
-
-      // Award points to the user when they share the link
       const userRef = doc(db, 'users', user.uid);
-      const userDoc = await getDoc(userRef);
-      if (userDoc.exists()) {
-        const userData = userDoc.data();
-        const updatedPoints = (userData.points || 0) + 100; // Add 100 points
-        await setDoc(userRef, { points: updatedPoints }, { merge: true });
+      try {
+        const userDoc = await getDoc(userRef);
+        if (userDoc.exists()) {
+          console.log("User document exists in Firestore");
+          const userData = userDoc.data();
+          const updatedPoints = (userData?.points || 0) + 100;
+          await setDoc(userRef, { points: updatedPoints }, { merge: true });
+          console.log("Points updated:", updatedPoints);
+        } else {
+          console.log("User document does not exist in Firestore");
+        }
+      } catch (error) {
+        console.error("Error handling Firestore operation:", error);
       }
+    } else {
+      console.log("No user detected");
+    }
+  };
+  
+
+ // Handle referral logic from URL
+ useEffect(() => {
+  console.log("Current URL:", window.location.href); // Debugging log
+  const urlParams = new URLSearchParams(window.location.search);
+  const referralId = urlParams.get("ref");
+  console.log("Referral ID in URL:", referralId); // Debugging log
+
+  if (referralId) {
+    setReferrer(referralId);
+    console.log("Referral ID found:", referralId);
+    handleReferral(referralId); // Handle the referral
+  } else {
+    console.log("No referral ID found in URL");
+  }
+}, []);
+
+// Handle referral processing
+const handleReferral = async (referralId: string) => {
+  const referrerDocRef = doc(db, "users", referralId);
+
+  try {
+    const referrerDoc = await getDoc(referrerDocRef);
+    if (referrerDoc.exists()) {
+      console.log("Referrer found in Firestore:", referralId);
+      // Update referrer's points in Firestore
+      await setDoc(referrerDocRef, { points: increment(10) }, { merge: true });
+      console.log("Referrer points updated");
+    }
+
+    // Award points to the new user (authenticated or not)
+    const newUserDocRef = doc(db, "users", referralId); // Using referralId as the new user's ID
+    await setDoc(
+      newUserDocRef,
+      { points: increment(100) }, // New user gets 100 points
+      { merge: true }
+    );
+    setClaimedPoints((prev) => prev + 100);
+    localStorage.setItem("claimedPoints", String(claimedPoints + 100));
+    console.log("New user points updated");
+
+  } catch (error) {
+    console.error("Error handling referral:", error);
+  }
+};
+
+
+  // Generate and copy referral link
+  const copyReferralLink = () => {
+    if (user) {
+      const referralLink = `https://t.me/ThoughGoldBullGroup?ref=${user.uid}`;
+      console.log("Referral link:", referralLink); // Debugging log
+      navigator.clipboard.writeText(referralLink).then(() => {
+        setCopied(true);
+        setTimeout(() => setCopied(false), 3000);
+      }).catch((err) => {
+        console.error("Failed to copy referral link:", err);
+      });
     }
   };
 
-  // Handle referral tracking and awarding points when referral is detected
-  useEffect(() => {
-    const urlParams = new URLSearchParams(window.location.search);
-    const referral = urlParams.get('referral');
+  // Reward the user for sharing the link
+  const rewardUser = async () => {
+    if (user) {
+      const userRef = doc(db, "users", user.uid);
+      const userDoc = await getDoc(userRef);
 
-    if (referral) {
-      setReferrer(referral); // Store the referrer
-      // Award points to the new user (100 points)
-      setPoints(prev => prev + 100);
-
-      // Check if this referral exists in Firestore
-      const userRef = doc(db, 'users', referral);
-      getDoc(userRef).then((docSnap) => {
-        if (docSnap.exists()) {
-          // If referrer exists, award them points (10% of the new user's points)
-          const referrerPoints = docSnap.data().points || 0;
-          setDoc(userRef, { points: referrerPoints + 10 }, { merge: true }); // Add 10% of new user's points to referrer
-        }
-      });
-
-      // Optionally store referral info in Firestore for the new user
-      if (user) {
-        const userDocRef = doc(db, 'users', user.uid);
-        setDoc(userDocRef, { points: points }, { merge: true });
+      if (userDoc.exists()) {
+        const userData = userDoc.data();
+        const Points = (userData?.points || 0) + 100; // Add 100 points
+        await setDoc(userRef, { points: Points }, { merge: true });
+        alert("You earned 100 points for sharing!");
       }
     }
-  }, [user, points]);
+  };
 
   return (
     <div className="min-h-screen bg-[#131313] text-white p-4">
@@ -136,12 +189,11 @@ const RefPage: React.FC = () => {
               Share
             </button>
 
-          <button 
-            onClick={copyLink}
-            className="flex items-center justify-center w-1/2 py-5 text-yellow-400 hover:text-white border border-yellow-400 hover:bg-yellow-500 focus:ring-4 focus:outline-none focus:ring-yellow-300 font-medium rounded-lg text-sm text-center me-2 mb-2 dark:border-yellow-300 dark:text-yellow-300 dark:hover:text-white dark:hover:bg-yellow-400 dark:focus:ring-yellow-900"
-            >
-            <img src={copy} alt="copy" className="w-5 h-5 mr-2" />
-            {copied ? "copied" : "copy link"}
+            <button 
+            onClick={copyReferralLink}
+             className="flex items-center justify-center w-1/2 py-5 rounded-lg  text-yellow-400 hover:text-white border border-yellow-400 hover:bg-yellow-500 focus:ring-4 focus:outline-none focus:ring-yellow-300 font-medium text-center  mb-2 dark:border-yellow-300 dark:text-yellow-300 dark:hover:text-white dark:hover:bg-yellow-400 dark:focus:ring-yellow-900">
+              <img src={copy} alt="copy" className="w-5 h-5 mr-2" />
+              {copied ? "copied" : "copy link"}
             </button>
 
           </div>
@@ -156,16 +208,16 @@ const RefPage: React.FC = () => {
             </div>
           </div>
 
-          {/* Frens List and Claim Button
+          {/* Frens List and Claim Button */}
           <div className="flex justify-between items-center mt-4">
             <p className="text-sm font-bold">friends list</p>
             <button
-            onClick={claimReward} 
+            onClick={rewardUser} 
             className="py-3 px-3 text-yellow-400 hover:text-white border border-yellow-400 hover:bg-yellow-500 focus:ring-4 focus:outline-none focus:ring-yellow-300 font-medium rounded-lg text-center me-2 mb-2 dark:border-yellow-300 dark:text-yellow-300 dark:hover:text-white dark:hover:bg-yellow-400 dark:focus:ring-yellow-900"
             >
               Claim rewards
             </button>
-          </div> */}
+          </div>
         </div>
 
 {isPopupOpen && (
