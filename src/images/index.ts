@@ -36,6 +36,7 @@ import Negotiation  from "./Negotiation.jpeg";
 import Financial  from "./Financial-Management.jpeg";
 import time  from "./time.png";
 import MEME_COIN from "./MEME_COIN.png";
+import Ref1 from "./re1.jpg";
 
 
 
@@ -78,5 +79,6 @@ export {
     pic4,
     time,
     MEME_COIN,
+    Ref1,
 
 };

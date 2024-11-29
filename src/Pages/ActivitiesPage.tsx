@@ -1,5 +1,5 @@
 import './ActivitiesPage.css'
-import { Activities, Earn, LuckyWin, memeCoin, mine, rightArrow, telegarmicon, usercomments, Wallet, xicon, youtubeicon } from '../images';
+import { Activities, Earn, LuckyWin, memeCoin, mine, Ref1, rightArrow, telegarmicon, usercomments, Wallet, xicon, youtubeicon } from '../images';
 import { useNavigate } from 'react-router-dom';
 import React, { useState, useEffect } from 'react';
 
@@ -18,16 +18,19 @@ const ActivitiesPage: React.FC = () => {
   const [isVerified1, setIsVerified1] = useState(false);
   const [isVerified2, setIsVerified2] = useState(false);
   const [isVerified3, setIsVerified3] = useState(false);
+  const [isVerified4, setIsVerified4] = useState(false);
   const [isNewSubscribe1, setIsNewSubscribe1] = useState(false);
   const [isNewSubscribe2, setIsNewSubscribe2] = useState(false);
   const [isNewSubscribe3, setIsNewSubscribe3] = useState(false);
+  const [isNewSubscribe4, setIsNewSubscribe4] = useState(false);
   const [rewardMessage1, setRewardMessage1] = useState('');
   const [rewardMessage2, setRewardMessage2] = useState('');
   const [rewardMessage3, setRewardMessage3] = useState('');
+  const [rewardMessage4, setRewardMessage4] = useState('');
 
   const rewardPoints = {
-    reward1: 1000,
-    reward2: 2000,
+    reward1: 100,
+    reward2: 200,
   };
 
   useEffect(() => {
@@ -57,14 +60,15 @@ const ActivitiesPage: React.FC = () => {
   };
 
   const TwitterNewUser = () => {
-    window.open("https://www.youtube.com/");
+    window.open("https://x.com/though_goldbull");
     setIsNewSubscribe2(true);
   };
 
   const YouTubeNewUser = () => {
-    window.open("https://www.youtube.com/");
+    window.open("https://www.youtube.com/@ThoughGoldBull");
     setIsNewSubscribe3(true);
   };
+
 
   return (
     <div className="min-h-screen bg-[#131313] text-white p-7">
@@ -119,7 +123,7 @@ const ActivitiesPage: React.FC = () => {
             <img src={telegarmicon} alt="Telegram" className="w-8 h-8" />
             <div>
               <p className="text-sm md:text-base">Join my Telegram Channel</p>
-              <p className="text-yellow-400 text-xs md:text-sm">+1000</p>
+              <p className="text-yellow-400 text-xs md:text-sm">+100</p>
             </div>
           </div>
           <div className="flex space-x-2 flex-wrap px-12">
@@ -146,7 +150,7 @@ const ActivitiesPage: React.FC = () => {
             <img src={xicon} alt="X" className="w-8 h-8" />
             <div>
               <p className="text-sm md:text-base">Follow Name on X</p>
-              <p className="text-yellow-400 text-xs md:text-sm">+1000</p>
+              <p className="text-yellow-400 text-xs md:text-sm">+100</p>
             </div>
           </div>
           <div className="flex space-x-2 flex-wrap">
@@ -173,7 +177,7 @@ const ActivitiesPage: React.FC = () => {
             <img src={youtubeicon} alt="YouTube" className="w-8 h-8" />
             <div>
               <p className="text-sm md:text-base">Subscribe to YouTube channel</p>
-              <p className="text-yellow-400 text-xs md:text-sm">+2000</p>
+              <p className="text-yellow-400 text-xs md:text-sm">+200</p>
             </div>
           </div>
           <div className="flex space-x-2 flex-wrap px-12">
@@ -191,6 +195,35 @@ const ActivitiesPage: React.FC = () => {
             >
               {isVerified3 ? "Verified" : "Verify"}
             </button>
+            </div>
+            </div>
+
+        {/* Task Card 3 - YouTube */}
+        <div className="bg-[#272a2f] p-4 mb-4 rounded-lg flex flex-col sm:flex-row justify-between items-start sm:items-center">
+          <div className="flex items-center space-x-4 mb-4 sm:mb-0">
+            <img src={Ref1} alt="YouTube" className="w-8 h-8" />
+            <div>
+              <p className="text-sm md:text-base">Join BeeHavest to earn more</p>
+              <p className="text-yellow-400 text-xs md:text-sm">+200</p>
+            </div>
+          </div>
+          <div className="flex space-x-2 flex-wrap px-12">
+          <button
+             disabled={isNewSubscribe4} 
+             onClick={YouTubeNewUser}
+             className=" text-yellow-400 hover:text-white border border-yellow-400 hover:bg-yellow-500 focus:ring-4 focus:outline-none focus:ring-yellow-300 font-medium text-center mb-2 px-3 py-1 rounded text-xs sm:text-sm dark:border-yellow-300 dark:text-yellow-300 dark:hover:text-white dark:hover:bg-yellow-400 dark:focus:ring-yellow-900"
+            >
+              {isNewSubscribe4 ? "Completed" : "Perform"}
+            </button>
+            <button
+            disabled={isVerified4} 
+            onClick={() => verifyTask("", "reward2", setRewardMessage4, setIsVerified4)}
+            className=" text-yellow-400 hover:text-white border border-yellow-400 hover:bg-yellow-500 focus:ring-4 focus:outline-none focus:ring-yellow-300 font-medium text-center mb-2 px-3 py-1 rounded text-xs sm:text-sm dark:border-yellow-300 dark:text-yellow-300 dark:hover:text-white dark:hover:bg-yellow-400 dark:focus:ring-yellow-900"
+            >
+              {isVerified3 ? "Verified" : "Verify"}
+            </button>
+            </div>
+            </div>
 
             {rewardMessage1 && (
                 <div className="flex fixed top-0 left-0 w-[100%] h-[100%] bg-[rgba(0,0,0,0.5)] items-center justify-center">
@@ -224,9 +257,17 @@ const ActivitiesPage: React.FC = () => {
               </div>
               </div>
               )}
+            {rewardMessage4 && (
+                <div className="flex fixed top-0 left-0 w-[100%] h-[100%] bg-[rgba(0,0,0,0.5)] items-center justify-center">
+              <div className= "content ">
+                <div className="bg-[#272a2f] rounded-lg max-w-52 p-10 text-center">
+                    {rewardMessage4}
+                    <button onClick={() => setRewardMessage4("")} className="mt-4 border-[2px] px-2 border-yellow-400 dark:hover:bg-yellow-400 rounded ">Okay</button>
+                </div>
+              </div>
+              </div>
+              )}
           </div>
-        </div>
-      </div>
 
       {/* Bottom fixed div */}
       <div className="fixed bottom-0 left-1/2 transform -translate-x-1/2 w-[calc(100%-2rem)] max-w-xl bg-[#272a2f] flex justify-around items-center z-50 rounded-3xl text-xs">
@@ -240,8 +281,11 @@ const ActivitiesPage: React.FC = () => {
           <img src={LuckyWin} alt="Luckywin" className="w-8 h-8 mx-auto" />
           <p className="mt-1">LuckyWin</p></button>
         </div>
-        
-        
+        <div className="text-center text-[#85827d] w-1/5">
+          <button onClick={() => navigate('/MinePage')} >
+          <img src={mine} alt="Mine" className="w-8 h-8 mx-auto" />
+          <p className="mt-1">Mine</p></button>
+        </div>
         <div className="text-center text-[#85827d] w-1/5">
           <img src={Activities} alt="Activities" className="w-8 h-8 mx-auto" />
           <p className="mt-1">Activities</p>
