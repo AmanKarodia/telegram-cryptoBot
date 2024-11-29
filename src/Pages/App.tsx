@@ -5,7 +5,10 @@ import Info from '../icons/Info';
 import Settings from '../icons/Settings';
 import { useNavigate } from 'react-router-dom';
 import { getNextResetTime, shouldResetClicks, initializeResetTime, } from '../utils/timerUtils';
-import axios from "axios";
+import { getAuth, onAuthStateChanged } from "firebase/auth";
+import { doc, getDoc, setDoc, updateDoc } from "firebase/firestore";
+import { db } from "./firebase"; // Adjust path to your Firebase config
+
 
 
 const App: React.FC = () => {
@@ -44,12 +47,10 @@ const App: React.FC = () => {
   const [resetTime, setResetTime] = useState<number>(() => initializeResetTime());
   //const [claimedPoints, setClaimedPoints] = useState(0); // Points that have been claimed
   const profitPerHour = 100;
+  const [user, setUser] = useState<any>(null);
 
   // Initialize state with the value from localStorage or default to 0
-  const [claimedPoints, setClaimedPoints] = useState<number>(() => {
-    const savedPoints = localStorage.getItem("claimedPoints");
-    return savedPoints ? parseInt(savedPoints, 10) : 0;
-  });
+  const [claimedPoints, setClaimedPoints] = useState<number>(0);
 
    // Initialize dailyTapsLeft from localStorage or default to 1500
    const [dailyTapsLeft, setDailyTapsLeft] = useState<number>(() => {
@@ -194,6 +195,65 @@ const App: React.FC = () => {
 
     return () => clearInterval(interval);
   }, [resetTime]);
+
+  // Monitor Firebase authentication state
+  useEffect(() => {
+    const auth = getAuth();
+    const unsubscribe = onAuthStateChanged(auth, (firebaseUser) => {
+      setUser(firebaseUser);
+    });
+    return () => unsubscribe();
+  }, []);
+
+  // Load user points from Firestore (or localStorage if the user is not available)
+  useEffect(() => {
+    const fetchPoints = async () => {
+      if (user) {
+        const userDocRef = doc(db, "users", user.uid);
+        const userDoc = await getDoc(userDocRef);
+
+        if (userDoc.exists()) {
+          const userData = userDoc.data();
+          const firebasePoints = userData?.points || 0;
+
+          // Update the state and localStorage
+          setClaimedPoints(firebasePoints);
+          localStorage.setItem("claimedPoints", firebasePoints.toString());
+        } else {
+          // Initialize points if user document doesn't exist
+          await setDoc(userDocRef, { points: 0 });
+          setClaimedPoints(0);
+          localStorage.setItem("claimedPoints", "0");
+        }
+      } else {
+        // Load from localStorage if no user is authenticated
+        const savedPoints = localStorage.getItem("claimedPoints");
+        setClaimedPoints(savedPoints ? parseInt(savedPoints, 10) : 0);
+      }
+    };
+
+    fetchPoints();
+  }, [user]);
+
+  // Sync points to Firestore every time claimedPoints changes
+  useEffect(() => {
+    const syncPointsToFirestore = async () => {
+      if (user) {
+        const userDocRef = doc(db, "users", user.uid);
+        await updateDoc(userDocRef, { points: claimedPoints });
+        localStorage.setItem("claimedPoints", claimedPoints.toString());
+      }
+    };
+
+    if (user && claimedPoints !== 0) {
+      syncPointsToFirestore();
+    }
+  }, [claimedPoints, user]);
+
+  // Example function to add points
+  const addPoints = (amount: number) => {
+    setClaimedPoints((prev) => prev + amount);
+  };
   
 
   return (
@@ -275,7 +335,7 @@ const App: React.FC = () => {
             <div className="px-4 mt-8 flex justify-center">
               <div className="px-4 py-2 flex items-center space-x-2">
                 <img src={MEME_COIN} alt="Dollar Coin" className="w-8 h-8" />
-                <p className="text-4xl text-white">{claimedPoints} <span className="text-[#f3ba2f]">TGB</span></p>
+                <p className="text-4xl text-white">  {claimedPoints !== null ? claimedPoints : "Loading..."} <span className="text-[#f3ba2f]">TGB</span></p>
             </div>
             </div>
 

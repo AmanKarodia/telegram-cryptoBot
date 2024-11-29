@@ -1,4 +1,4 @@
-import { Activities, youtubeicon, usercomments, Earn, Wallet, LuckyWin, rightArrow, copy, share, MEME_COIN } from '../../images';
+import { Activities, youtubeicon, usercomments, Earn, Wallet, LuckyWin, rightArrow, share, MEME_COIN } from '../../images';
 import { useNavigate } from 'react-router-dom';
 import React, {useState, useEffect} from 'react';
 import { getAuth, signInAnonymously, onAuthStateChanged } from "firebase/auth";
@@ -8,10 +8,8 @@ import { doc, setDoc, increment, getDoc, getFirestore, onSnapshot } from "fireba
 const RefPage: React.FC = () => {
 
   const navigate = useNavigate();
-  const [isPopupOpen, setIsPopupOpen] = useState(false);
   const [user, setUser] = useState<any>(null);
   const [claimedPoints, setClaimedPoints] = useState<number | null>(null);
-  const [referrerId, setReferrerId] = useState<string | null>(null);
 
    // Handle Firebase anonymous login and user state
   useEffect(() => {

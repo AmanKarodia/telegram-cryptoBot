@@ -109,12 +109,12 @@ const VideoPage: React.FC = () => {
         </button>
       </div>
 
-      {/* <div className="border-solid border-2 border-[#444444] rounded-lg flex-1 py-2 text-center hover:bg-transparent active:bg-gray-500 focus:outline-none text-white relative sm:py-4 sm:text-base text-sm">
+      <div className="border-solid border-2 border-[#444444] rounded-lg flex-1 py-2 text-center hover:bg-transparent active:bg-gray-500 focus:outline-none text-white relative sm:py-4 sm:text-base text-sm">
         <button onClick={() => navigate('/RefPage')}>
           <img src={usercomments} alt="Referrals" className="w-6 h-6 absolute left-2 top-1/2 transform -translate-y-1/2 sm:left-8" />
           <p className="translate-x-2">Referrals</p>
         </button>
-      </div> */}
+      </div>
       </div>
   
         {/* Social Tasks Section */}
