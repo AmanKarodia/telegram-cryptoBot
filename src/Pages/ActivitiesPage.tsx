@@ -19,10 +19,6 @@ const ActivitiesPage: React.FC = () => {
   const [isVerified2, setIsVerified2] = useState(false);
   const [isVerified3, setIsVerified3] = useState(false);
   const [isVerified4, setIsVerified4] = useState(false);
-  const [isNewSubscribe1, setIsNewSubscribe1] = useState(false);
-  const [isNewSubscribe2, setIsNewSubscribe2] = useState(false);
-  const [isNewSubscribe3, setIsNewSubscribe3] = useState(false);
-  const [isNewSubscribe4, setIsNewSubscribe4] = useState(false);
   const [rewardMessage1, setRewardMessage1] = useState('');
   const [rewardMessage2, setRewardMessage2] = useState('');
   const [rewardMessage3, setRewardMessage3] = useState('');
@@ -33,9 +29,48 @@ const ActivitiesPage: React.FC = () => {
     reward2: 200,
   };
 
+   // Load the state from local storage or default to false
+   const [isNewSubscribe1, setIsNewSubscribe1] = useState(() => {
+    const saved = localStorage.getItem('isNewSubscribe1');
+    return saved !== null ? JSON.parse(saved) : false;
+  });
+  
+  const [isNewSubscribe2, setIsNewSubscribe2] = useState(() => {
+    const saved = localStorage.getItem('isNewSubscribe2');
+    return saved !== null ? JSON.parse(saved) : false;
+  });
+  
+  const [isNewSubscribe3, setIsNewSubscribe3] = useState(() => {
+    const saved = localStorage.getItem('isNewSubscribe3');
+    return saved !== null ? JSON.parse(saved) : false;
+  });
+  
+  const [isNewSubscribe4, setIsNewSubscribe4] = useState(() => {
+    const saved = localStorage.getItem('isNewSubscribe4');
+    return saved !== null ? JSON.parse(saved) : false;
+  });
+
   useEffect(() => {
     localStorage.setItem("claimedPoints", claimedPoints.toString());
   }, [claimedPoints]);
+
+  // Use an effect to store values in local storage whenever they change
+  useEffect(() => {
+    localStorage.setItem('isNewSubscribe1', JSON.stringify(isNewSubscribe1));
+  }, [isNewSubscribe1]);
+
+  useEffect(() => {
+    localStorage.setItem('isNewSubscribe2', JSON.stringify(isNewSubscribe2));
+  }, [isNewSubscribe2]);
+
+  useEffect(() => {
+    localStorage.setItem('isNewSubscribe3', JSON.stringify(isNewSubscribe3));
+  }, [isNewSubscribe3]);
+
+  useEffect(() => {
+    localStorage.setItem('isNewSubscribe4', JSON.stringify(isNewSubscribe4));
+  }, [isNewSubscribe4]);
+  
 
   const addPoints = (rewardKey: string, setRewardMessage: React.Dispatch<React.SetStateAction<string>>) => {
     const rewardValue = rewardPoints[rewardKey];
