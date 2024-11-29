@@ -15,10 +15,10 @@ const ActivitiesPage: React.FC = () => {
   });
 
   const [pointsToAdd, setPointsToAdd] = useState(0);
-  const [isVerified1, setIsVerified1] = useState(false);
-  const [isVerified2, setIsVerified2] = useState(false);
-  const [isVerified3, setIsVerified3] = useState(false);
-  const [isVerified4, setIsVerified4] = useState(false);
+  // const [isVerified1, setIsVerified1] = useState(false);
+  // const [isVerified2, setIsVerified2] = useState(false);
+  // const [isVerified3, setIsVerified3] = useState(false);
+  // const [isVerified4, setIsVerified4] = useState(false);
   const [isNewSubscribe1, setIsNewSubscribe1] = useState(false);
   const [isNewSubscribe2, setIsNewSubscribe2] = useState(false);
   const [isNewSubscribe3, setIsNewSubscribe3] = useState(false);
@@ -44,15 +44,15 @@ const ActivitiesPage: React.FC = () => {
     setRewardMessage(`🎉 Congratulations! You've earned +${rewardValue} TGB! 🎉`);
   };
 
-  const verifyTask = (correctCode: string, rewardKey: string, setRewardMessage: React.Dispatch<React.SetStateAction<string>>, setIsVerified: React.Dispatch<React.SetStateAction<boolean>>) => {
-    const userCode = prompt("Enter the code you saw in the video:");
-    if (userCode === correctCode) {
-      addPoints(rewardKey, setRewardMessage);
-      setIsVerified(true);
-    } else {
-      alert("Incorrect code. Please try again after watching the video.");
-    }
-  };
+  // const verifyTask = (correctCode: string, rewardKey: string, setRewardMessage: React.Dispatch<React.SetStateAction<string>>, setIsVerified: React.Dispatch<React.SetStateAction<boolean>>) => {
+  //   const userCode = prompt("Enter the code you saw in the video:");
+  //   if (userCode === correctCode) {
+  //     addPoints(rewardKey, setRewardMessage);
+  //     setIsVerified(true);
+  //   } else {
+  //     alert("Incorrect code. Please try again after watching the video.");
+  //   }
+  // };
 
   const TelegramNewUser = () => {
     window.open("https://t.me/ThoughGoldBullGroup");
@@ -67,6 +67,11 @@ const ActivitiesPage: React.FC = () => {
   const YouTubeNewUser = () => {
     window.open("https://www.youtube.com/@ThoughGoldBull");
     setIsNewSubscribe3(true);
+  };
+
+  const TelegramRef1 = () => {
+    window.open("https://t.me/beeharvestbot?start=6315760113_d0oIklLk");
+    setIsNewSubscribe4(true);
   };
 
 
@@ -114,11 +119,11 @@ const ActivitiesPage: React.FC = () => {
 
       {/* Social Tasks Section */}
       <div className='p-7'>
-        <h2 className="text-[20px] mb-2">Social Tasks</h2>
+        <h2 className="text-[20px] mb-3">Social Tasks</h2>
         <p className="text-[16px] mb-4">Perform social tasks to earn more TGB tokens and stay updated!</p>
 
         {/* Task Card 1 - Telegram */}
-        <div className="bg-[#272a2f] p-4 mb-4 rounded-lg flex flex-col sm:flex-row justify-between items-center sm:items-center">
+        <div className="bg-[#272a2f] p-4 mb-4 rounded-lg flex flex-col sm:flex-row justify-between items-start sm:items-center">
           <div className="flex items-center space-x-4 mb-4 sm:mb-0">
             <img src={telegarmicon} alt="Telegram" className="w-8 h-8" />
             <div>
@@ -134,18 +139,18 @@ const ActivitiesPage: React.FC = () => {
             >
               {isNewSubscribe1 ? "Completed" : "Perform"}
             </button>
-            <button
+            {/* <button
              disabled={isVerified1} 
              onClick={() => verifyTask("8465", "reward1", setRewardMessage1, setIsVerified1)}
             className=" text-yellow-400 hover:text-white border border-yellow-400 hover:bg-yellow-500 focus:ring-4 focus:outline-none focus:ring-yellow-300 font-medium text-center mb-2 px-3 py-1 rounded text-xs sm:text-sm dark:border-yellow-300 dark:text-yellow-300 dark:hover:text-white dark:hover:bg-yellow-400 dark:focus:ring-yellow-900"
             >
               {isVerified1 ? "Verified" : "Verify"}
-            </button>
+            </button> */}
           </div>
         </div>
 
         {/* Task Card 2 - X */}
-        <div className="bg-[#272a2f] p-4 mb-4 rounded-lg flex flex-col justify-between items-center">
+        <div className="bg-[#272a2f] p-4 mb-4 rounded-lg flex flex-col sm:flex-row justify-between items-start sm:items-center">
           <div className="flex items-center space-x-4 mb-4 sm:mb-0">
             <img src={xicon} alt="X" className="w-8 h-8" />
             <div>
@@ -153,7 +158,7 @@ const ActivitiesPage: React.FC = () => {
               <p className="text-yellow-400 text-xs md:text-sm">+100</p>
             </div>
           </div>
-          <div className="flex space-x-2 flex-wrap">
+          <div className="flex space-x-2 flex-wrap px-12">
           <button
              disabled={isNewSubscribe2} 
              onClick={TwitterNewUser}
@@ -161,13 +166,13 @@ const ActivitiesPage: React.FC = () => {
             >
               {isNewSubscribe2 ? "Completed" : "Perform"}
             </button>
-            <button
+            {/* <button
             disabled={isVerified2} 
             onClick={() => verifyTask("8465", "reward1", setRewardMessage2, setIsVerified2)}
             className=" text-yellow-400 hover:text-white border border-yellow-400 hover:bg-yellow-500 focus:ring-4 focus:outline-none focus:ring-yellow-300 font-medium text-center mb-2 px-3 py-1 rounded text-xs sm:text-sm dark:border-yellow-300 dark:text-yellow-300 dark:hover:text-white dark:hover:bg-yellow-400 dark:focus:ring-yellow-900"
             >
               {isVerified2 ? "Verified" : "Verify"}
-            </button>
+            </button> */}
           </div>
         </div>
 
@@ -188,13 +193,13 @@ const ActivitiesPage: React.FC = () => {
             >
               {isNewSubscribe3 ? "Completed" : "Perform"}
             </button>
-            <button
+            {/* <button
             disabled={isVerified3} 
             onClick={() => verifyTask("8465", "reward1", setRewardMessage3, setIsVerified3)}
             className=" text-yellow-400 hover:text-white border border-yellow-400 hover:bg-yellow-500 focus:ring-4 focus:outline-none focus:ring-yellow-300 font-medium text-center mb-2 px-3 py-1 rounded text-xs sm:text-sm dark:border-yellow-300 dark:text-yellow-300 dark:hover:text-white dark:hover:bg-yellow-400 dark:focus:ring-yellow-900"
             >
               {isVerified3 ? "Verified" : "Verify"}
-            </button>
+            </button> */}
             </div>
             </div>
 
@@ -210,18 +215,18 @@ const ActivitiesPage: React.FC = () => {
           <div className="flex space-x-2 flex-wrap px-12">
           <button
              disabled={isNewSubscribe4} 
-             onClick={YouTubeNewUser}
+             onClick={TelegramRef1}
              className=" text-yellow-400 hover:text-white border border-yellow-400 hover:bg-yellow-500 focus:ring-4 focus:outline-none focus:ring-yellow-300 font-medium text-center mb-2 px-3 py-1 rounded text-xs sm:text-sm dark:border-yellow-300 dark:text-yellow-300 dark:hover:text-white dark:hover:bg-yellow-400 dark:focus:ring-yellow-900"
             >
               {isNewSubscribe4 ? "Completed" : "Perform"}
             </button>
-            <button
+            {/* <button
             disabled={isVerified4} 
             onClick={() => verifyTask("", "reward2", setRewardMessage4, setIsVerified4)}
             className=" text-yellow-400 hover:text-white border border-yellow-400 hover:bg-yellow-500 focus:ring-4 focus:outline-none focus:ring-yellow-300 font-medium text-center mb-2 px-3 py-1 rounded text-xs sm:text-sm dark:border-yellow-300 dark:text-yellow-300 dark:hover:text-white dark:hover:bg-yellow-400 dark:focus:ring-yellow-900"
             >
-              {isVerified3 ? "Verified" : "Verify"}
-            </button>
+              {isVerified4 ? "Verified" : "Verify"}
+            </button> */}
             </div>
             </div>
 
