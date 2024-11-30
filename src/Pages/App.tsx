@@ -50,7 +50,10 @@ const App: React.FC = () => {
   const [user, setUser] = useState<any>(null);
 
   // Initialize state with the value from localStorage or default to 0
-  const [claimedPoints, setClaimedPoints] = useState<number>(0);
+  const [claimedPoints, setClaimedPoints] = useState<number>(() => {
+    const savedPoints = localStorage.getItem("claimedPoints");
+    return savedPoints ? parseInt(savedPoints, 10) : 0;
+  });
 
    // Initialize dailyTapsLeft from localStorage or default to 1500
    const [dailyTapsLeft, setDailyTapsLeft] = useState<number>(() => {
@@ -205,38 +208,34 @@ const App: React.FC = () => {
     return () => unsubscribe();
   }, []);
 
-  // Load user points from Firestore (or localStorage if the user is not available)
+  // Load points from Firebase when the user changes
   useEffect(() => {
-    const fetchPoints = async () => {
+    const loadPoints = async () => {
       if (user) {
         const userDocRef = doc(db, "users", user.uid);
         const userDoc = await getDoc(userDocRef);
 
         if (userDoc.exists()) {
-          const userData = userDoc.data();
-          const firebasePoints = userData?.points || 0;
+          const data = userDoc.data();
+          const points = data.points || 0;
 
-          // Update the state and localStorage
-          setClaimedPoints(firebasePoints);
-          localStorage.setItem("claimedPoints", firebasePoints.toString());
+          // Sync the points with localStorage and state
+          setClaimedPoints(points);
+          localStorage.setItem("claimedPoints", points.toString());
         } else {
-          // Initialize points if user document doesn't exist
-          await setDoc(userDocRef, { points: 0 });
+          // If the user doc doesn't exist, initialize it in Firestore
+          await updateDoc(userDocRef, { points: 0 });
           setClaimedPoints(0);
           localStorage.setItem("claimedPoints", "0");
         }
-      } else {
-        // Load from localStorage if no user is authenticated
-        const savedPoints = localStorage.getItem("claimedPoints");
-        setClaimedPoints(savedPoints ? parseInt(savedPoints, 10) : 0);
       }
     };
 
-    fetchPoints();
+    loadPoints();
   }, [user]);
 
-  // Sync points to Firestore every time claimedPoints changes
-  useEffect(() => {
+   // Sync points to Firestore and localStorage every time claimedPoints changes
+   useEffect(() => {
     const syncPointsToFirestore = async () => {
       if (user) {
         const userDocRef = doc(db, "users", user.uid);
@@ -245,7 +244,7 @@ const App: React.FC = () => {
       }
     };
 
-    if (user && claimedPoints !== 0) {
+    if (user) {
       syncPointsToFirestore();
     }
   }, [claimedPoints, user]);
