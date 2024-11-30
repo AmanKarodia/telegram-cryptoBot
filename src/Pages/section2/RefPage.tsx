@@ -1,133 +1,78 @@
 import { Activities, youtubeicon, usercomments, Earn, Wallet, LuckyWin, rightArrow, share, MEME_COIN } from '../../images';
 import { useNavigate } from 'react-router-dom';
+import { useLocation } from "react-router-dom";
 import React, {useState, useEffect} from 'react';
 import { getAuth, signInAnonymously, onAuthStateChanged } from "firebase/auth";
-import { doc, setDoc, increment, getDoc, getFirestore, onSnapshot } from "firebase/firestore";
+import { doc, setDoc, increment, getDoc, getFirestore, onSnapshot, updateDoc } from "firebase/firestore";
 
 
 const RefPage: React.FC = () => {
 
   const navigate = useNavigate();
+  const db = getFirestore();
   const [user, setUser] = useState<any>(null);
-  const [claimedPoints, setClaimedPoints] = useState<number | null>(null);
+  const [referrerId, setReferrerId] = useState<string | null>(null);
 
-   // Handle Firebase anonymous login and user state
+ // Initialize state with the value from localStorage or default to 0
+ const [claimedPoints, setClaimedPoints] = useState<number>(() => {
+  const savedPoints = localStorage.getItem("claimedPoints");
+  return savedPoints ? parseInt(savedPoints, 10) : 0;
+});
+
+
+  // Update localStorage whenever claimedPoints changes
   useEffect(() => {
-    const auth = getAuth();
-    const unsubscribe = onAuthStateChanged(auth, (firebaseUser) => {
-      if (firebaseUser) {
-        setUser(firebaseUser); // Store the user if authenticated anonymously
-      } else {
-        // Sign in anonymously if no user is authenticated
-        signInAnonymously(auth)
-          .then((userCredential) => {
-            setUser(userCredential.user); // Save the new anonymous user
-          })
-          .catch((error) => {
-            console.error("Error signing in anonymously:", error);
-          });
-      }
-    });
+    localStorage.setItem("claimedPoints", claimedPoints.toString());
+  }, [claimedPoints]);
 
-    return () => unsubscribe();
+  // Detect referrer ID from the URL
+  useEffect(() => {
+    const queryParams = new URLSearchParams(window.location.search);
+    const referrer = queryParams.get("ref");
+    console.log("Referrer ID from URL:", referrer);
+    if (referrer) {
+      setReferrerId(referrer);
+    }
   }, []);
 
 
-
-  // Firebase Auth: Anonymous Authentication
-  useEffect(() => {
+   // Firebase Auth: Anonymous Authentication
+   useEffect(() => {
     const auth = getAuth();
-    const unsubscribe = onAuthStateChanged(auth, (firebaseUser) => {
+    const unsubscribe = onAuthStateChanged(auth, async (firebaseUser) => {
       if (firebaseUser) {
         setUser(firebaseUser);
+        await fetchPoints(firebaseUser.uid);
+
+        // Reward referrer if applicable
+        if (referrerId && referrerId !== firebaseUser.uid) {
+          await rewardReferrer(referrerId);
+        }
       } else {
-        signInAnonymously(auth)
-          .then((userCredential) => {
-            setUser(userCredential.user);
-          })
-          .catch((error) => {
-            console.error("Error signing in anonymously:", error);
-          });
+        try {
+          const userCredential = await signInAnonymously(auth);
+          setUser(userCredential.user);
+          await fetchPoints(userCredential.user.uid);
+        } catch (error) {
+          console.error("Error signing in anonymously:", error);
+        }
       }
     });
 
     return () => unsubscribe();
-  }, []);
+  }, [referrerId]);
 
-  // Fetch points from Firebase
-  useEffect(() => {
-    const fetchPoints = async () => {
-      if (user) {
-        try {
-          const userDocRef = doc(db, "users", user.uid);
-          const userDoc = await getDoc(userDocRef);
-  
-          if (userDoc.exists()) {
-            // Fetch and set existing points
-            const data = userDoc.data();
-            setClaimedPoints(data.points || 0);
-          } else {
-            console.log("User document does not exist. Initializing...");
-            // Initialize the user document with 0 points (if not already created)
-            await setDoc(userDocRef, { points: 0 }, { merge: true });
-            setClaimedPoints(0);
-          }
-        } catch (error) {
-          console.error("Error fetching points:", error);
-        }
-      }
-    };
-  
-    fetchPoints();
-  }, [user]);
-
-  // Handle the referral link sharing
-  const handleShare = async () => {
-    if (!user) {
-      alert("You must be logged in to share your link.");
-      return;
-    }
-
-    const referralLink = `${window.location.origin}?ref=${user.uid}`;
-    try {
-      // Award points to the user who shares the link (referrer)
-      const userDocRef = doc(db, "users", user.uid);
-      await setDoc(
-        userDocRef,
-        { points: increment(100) }, // Award 100 points for sharing the link
-        { merge: true }
-      );
-      console.log("100 points awarded for sharing the link");
-
-      // Use Web Share API (for mobile) or copy the link to the clipboard (desktop fallback)
-      if (navigator.share) {
-        await navigator.share({
-          title: "Check this out!",
-          text: "Join my referral link and get 100 points!",
-          url: referralLink,
-        });
-      } else {
-        navigator.clipboard.writeText(referralLink);
-        alert("Referral link copied to clipboard! Share it with others.");
-      }
-    } catch (error) {
-      console.error("Error sharing referral link:", error);
-    }
-  };
-
-  const db = getFirestore();
-
-  // Fetch points from Firestore
-  const fetchPoints = async (uid: string) => {
+   // Fetch points from Firestore
+   const fetchPoints = async (uid: string) => {
     try {
       const userDocRef = doc(db, "users", uid);
       const userDocSnap = await getDoc(userDocRef);
-
+  
       if (userDocSnap.exists()) {
         const data = userDocSnap.data();
-        setClaimedPoints(data.points || 0); // Default to 0 if no points
+        setClaimedPoints(data?.points || 0);  // Ensure safe access of points
       } else {
-        console.log("User document does not exist.");
+        await setDoc(userDocRef, { points: 0 });
         setClaimedPoints(0);
       }
     } catch (error) {
@@ -135,32 +80,26 @@ const RefPage: React.FC = () => {
     }
   };
 
-  useEffect(() => {
-    const auth = getAuth();
+  // Handle link sharing
+  const handleShare = () => {
+    if (!user) {
+      alert("You must be logged in to share your link.");
+      return;
+    }
 
-    // Anonymous sign-in function
-    const signIn = async () => {
-      try {
-        const userCredential = await signInAnonymously(auth);
-        setUser(userCredential.user);
-        fetchPoints(userCredential.user.uid); // Fetch points after sign-in
-      } catch (error) {
-        console.error("Error signing in anonymously:", error);
-      }
-    };
+    const referralLink = `${window.location.origin}?ref=${user.uid}`;
 
-    // Subscribe to auth state changes
-    const unsubscribe = onAuthStateChanged(auth, (firebaseUser) => {
-      if (firebaseUser) {
-        setUser(firebaseUser);
-        fetchPoints(firebaseUser.uid); // Fetch points for authenticated user
-      } else {
-        signIn();
-      }
-    });
-
-    return () => unsubscribe(); // Cleanup on unmount
-  }, []);
+    if (navigator.share) {
+      navigator.share({
+        title: "Referral Link",
+        text: "Join via my referral link!",
+        url: referralLink,
+      });
+    } else {
+      navigator.clipboard.writeText(referralLink);
+      alert("Referral link copied to clipboard!");
+    }
+  };
 
   // Real-time listener for points changes
   useEffect(() => {
@@ -170,14 +109,49 @@ const RefPage: React.FC = () => {
       const unsubscribe = onSnapshot(userDocRef, (docSnap) => {
         if (docSnap.exists()) {
           const data = docSnap.data();
-          setClaimedPoints(data.points || 0); // Update points in real-time
+          setClaimedPoints(data.points || 0);
         }
       });
 
-      return () => unsubscribe(); // Cleanup real-time listener
+      return () => unsubscribe();
     }
   }, [user]);
 
+  // Reward the referrer with points
+  const rewardReferrer = async (referrerUid: string) => {
+    try {
+      const referrerDocRef = doc(db, "users", referrerUid);
+      const referrerDocSnap = await getDoc(referrerDocRef);
+  
+      if (referrerDocSnap.exists()) {
+        console.log("Referrer document exists. Incrementing points...");
+        await updateDoc(referrerDocRef, {
+          points: increment(10),  // Increment points by 10
+        });
+        console.log(`Referrer ${referrerUid} rewarded with 10 points.`);
+      } else {
+        console.log("Referrer document does not exist.");
+      }
+    } catch (error) {
+      console.error("Error rewarding referrer:", error);
+    }
+  };
+  
+  // Sync points to Firestore and localStorage
+useEffect(() => {
+  const syncPointsToFirestore = async () => {
+    if (user) {
+      const userDocRef = doc(db, "users", user.uid);
+      console.log("Syncing points to Firestore:", claimedPoints);
+      await updateDoc(userDocRef, { points: claimedPoints });
+      localStorage.setItem("claimedPoints", claimedPoints.toString());
+    }
+  };
+
+  if (user && claimedPoints !== 0) {
+    syncPointsToFirestore();
+  }
+}, [claimedPoints, user]);
 
   return (
     <div className="min-h-screen bg-[#131313] text-white p-4">

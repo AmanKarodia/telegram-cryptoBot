@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import './App.css'
-import { Activities, binanceLogo, dailyReward, dollarCoin, Earn, LuckyWin, MEME_COIN, memeCoin, mine, rocket, time } from '../images';
+import { Activities, binanceLogo, dailyReward, dollarCoin, Earn, LuckyWin, MEME_COIN, memeCoin, mine, time } from '../images';
 import Info from '../icons/Info';
 import Settings from '../icons/Settings';
 import { useNavigate } from 'react-router-dom';
@@ -208,39 +208,47 @@ const App: React.FC = () => {
     return () => unsubscribe();
   }, []);
 
-  // Load points from Firebase when the user changes
+  // Load points from Firestore and sync with localStorage
   useEffect(() => {
-    const loadPoints = async () => {
+    const loadPointsFromFirestore = async () => {
       if (user) {
         const userDocRef = doc(db, "users", user.uid);
-        const userDoc = await getDoc(userDocRef);
 
-        if (userDoc.exists()) {
-          const data = userDoc.data();
-          const points = data.points || 0;
+        try {
+          const userDoc = await getDoc(userDocRef);
 
-          // Sync the points with localStorage and state
-          setClaimedPoints(points);
-          localStorage.setItem("claimedPoints", points.toString());
-        } else {
-          // If the user doc doesn't exist, initialize it in Firestore
-          await updateDoc(userDocRef, { points: 0 });
-          setClaimedPoints(0);
-          localStorage.setItem("claimedPoints", "0");
+          if (userDoc.exists()) {
+            const points = userDoc.data()?.points || 0;
+
+            // Sync Firestore points with local state and localStorage
+            setClaimedPoints(points);
+            localStorage.setItem("claimedPoints", points.toString());
+          } else {
+            // Create a new document if it doesn't exist
+            await setDoc(userDocRef, { points: 0 });
+            setClaimedPoints(0);
+            localStorage.setItem("claimedPoints", "0");
+          }
+        } catch (error) {
+          console.error("Error loading points from Firestore:", error);
         }
       }
     };
 
-    loadPoints();
+    loadPointsFromFirestore();
   }, [user]);
 
-   // Sync points to Firestore and localStorage every time claimedPoints changes
-   useEffect(() => {
+    // Sync claimedPoints to Firestore and localStorage
+  useEffect(() => {
     const syncPointsToFirestore = async () => {
       if (user) {
         const userDocRef = doc(db, "users", user.uid);
-        await updateDoc(userDocRef, { points: claimedPoints });
-        localStorage.setItem("claimedPoints", claimedPoints.toString());
+        try {
+          await updateDoc(userDocRef, { points: claimedPoints });
+          localStorage.setItem("claimedPoints", claimedPoints.toString());
+        } catch (error) {
+          console.error("Error syncing points to Firestore:", error);
+        }
       }
     };
 
