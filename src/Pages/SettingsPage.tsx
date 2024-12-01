@@ -31,7 +31,7 @@ const ActivitiesPage: React.FC = () => {
 
     // Example redemption logic
     if (code.trim() === "SPECIAL123") {
-      points = 20000000; // Points awarded for the valid code
+      points = 2000; // Points awarded for the valid code
       setMessage(`Code successfully redeemed! You earned ${points} points.`);
     } else {
       setMessage("Invalid code. Please try again.");
