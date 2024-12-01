@@ -1,6 +1,8 @@
 import { Activities, Earn, LuckyWin, memeCoin, mine, rightArrow, telegarmicon, usercomments, Wallet, xicon, youtubeicon } from '../images';
 import { useNavigate } from 'react-router-dom';
 import React, { useState, useEffect } from 'react';
+import { getAuth } from "firebase/auth";
+import { getFirestore, doc, getDoc, setDoc, updateDoc } from "firebase/firestore";
 
 
 
@@ -26,22 +28,71 @@ const ActivitiesPage: React.FC = () => {
     setCode(event.target.value);
   };
 
-  const handleRedeem = () => {
-    let points = 0;
+  const handleRedeem = async () => {
+    const auth = getAuth();
+    const user = auth.currentUser;
 
-    // Example redemption logic
-    if (code.trim() === "SPECIAL123") {
-      points = 2000; // Points awarded for the valid code
-      setMessage(`Code successfully redeemed! You earned ${points} points.`);
-    } else {
-      setMessage("Invalid code. Please try again.");
+    if (!user) {
+      setMessage("You must be logged in to redeem codes.");
+      handleCloseModal();
+      return;
     }
 
-    // Update claimed points if valid code
-    if (points > 0) {
-      const newClaimedPoints = claimedPoints + points;
-      setClaimedPoints(newClaimedPoints);
-      localStorage.setItem("claimedPoints", newClaimedPoints.toString());
+    const userId = user.uid; // Get the logged-in user's ID
+    const db = getFirestore();
+    const userRef = doc(db, "users", userId); // Firestore reference for the user
+    let points = 0;
+
+    try {
+      // Fetch user's data from Firestore
+      const userSnapshot = await getDoc(userRef);
+      const userData = userSnapshot.exists() ? userSnapshot.data() : {};
+
+      // Get redeemed codes and claimed points from Firestore
+      const redeemedCodes = userData.redeemedCodes || [];
+      const claimedPointsFirestore = userData.claimedPoints || 0;
+
+      // Check if the code is already redeemed
+      if (redeemedCodes.includes(code.trim())) {
+        setMessage("This code has already been redeemed.");
+        handleCloseModal();
+        return;
+      }
+
+      // Example redemption logic
+      if (code.trim() === "SPECIAL123") {
+        points = 2000; // Points awarded for the valid code
+        setMessage(`Code successfully redeemed! You earned ${points} points.`);
+      } else {
+        setMessage("Invalid code. Please try again.");
+      }
+
+      // Update points and redeemed codes if valid
+      if (points > 0) {
+        const newClaimedPoints = claimedPoints + points;
+        const newRedeemedCodes = [...redeemedCodes, code.trim()];
+
+        // Update local state and local storage
+        setClaimedPoints(newClaimedPoints);
+        localStorage.setItem("claimedPoints", newClaimedPoints.toString());
+        localStorage.setItem("redeemedCodes", JSON.stringify(newRedeemedCodes));
+
+        // Update Firestore with new points and redeemed codes
+        if (userSnapshot.exists()) {
+          await updateDoc(userRef, {
+            claimedPoints: newClaimedPoints,
+            redeemedCodes: newRedeemedCodes,
+          });
+        } else {
+          await setDoc(userRef, {
+            claimedPoints: newClaimedPoints,
+            redeemedCodes: newRedeemedCodes,
+          });
+        }
+      }
+    } catch (error) {
+      console.error("Error redeeming code:", error);
+      setMessage("An error occurred while redeeming the code. Please try again.");
     }
 
     handleCloseModal();
