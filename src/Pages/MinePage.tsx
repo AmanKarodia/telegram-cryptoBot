@@ -118,6 +118,7 @@ const MinePage: React.FC = () => {
     
           // Increment level
           const newLevel = disciplinelevel + 1;
+          setDisciplineLevel(newLevel);
           localStorage.setItem("disciplinelevel", newLevel.toString());
     
           alert(`Successfully upgraded ${cardType} to level ${newLevel}!`);

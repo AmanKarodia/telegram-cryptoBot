@@ -28,53 +28,76 @@ const RefPage: React.FC = () => {
   useEffect(() => {
     const queryParams = new URLSearchParams(window.location.search);
     const referrer = queryParams.get("ref");
+    console.log("Referrer ID from URL:", referrer);  // Log to check if `ref` is passed correctly
     if (referrer) {
-      setReferrerId(referrer); // Set the referrer ID from the URL
+      setReferrerId(referrer);
     }
   }, []);
+
+  useEffect(() => {
+    console.log("Updated claimedPoints:", claimedPoints);  // Log whenever claimedPoints changes
+  }, [claimedPoints]);
+  
 
 
    // Firebase Auth: Anonymous Authentication
    useEffect(() => {
     const auth = getAuth();
-  
     const unsubscribe = onAuthStateChanged(auth, async (firebaseUser) => {
+      console.log("Auth state changed:", firebaseUser);  // Check if Firebase user is authenticated
       if (firebaseUser) {
-        setUser(firebaseUser); // Set authenticated user
-        await fetchPoints(firebaseUser.uid); // Fetch points for current user
+        setUser(firebaseUser);  // Set authenticated user
+        await fetchPoints(firebaseUser.uid);  // Fetch points for current user
   
-        // If referred by someone, award points to the new user and referrer
         if (referrerId && referrerId !== firebaseUser.uid) {
-          await rewardReferrer(referrerId); // Reward referrer with points
-          await awardPointsToNewUser(firebaseUser.uid); // Award points to new user
+          console.log(`User is referred by ${referrerId}`);  // Check if referrer is present
+          await rewardReferrer(referrerId);  // Reward referrer with points
+          await awardPointsToNewUser(firebaseUser.uid);  // Award points to new user
         }
       } else {
-        try {
-          const userCredential = await signInAnonymously(auth); // Sign in anonymously
-          setUser(userCredential.user);
-          await fetchPoints(userCredential.user.uid); // Fetch points for the new user
-          if (referrerId) {
-            await rewardReferrer(referrerId); // Reward referrer if there's one
-            await awardPointsToNewUser(userCredential.user.uid); // Award points to the new user
-          }
-        } catch (error) {
-          console.error("Error signing in anonymously:", error);
+        const userCredential = await signInAnonymously(auth);  // Sign in anonymously if not authenticated
+        setUser(userCredential.user);
+        await fetchPoints(userCredential.user.uid);  // Fetch points for the new user
+        if (referrerId) {
+          console.log(`New user referred by ${referrerId}`);  // Check if referral is present
+          await rewardReferrer(referrerId);  // Reward referrer
+          await awardPointsToNewUser(userCredential.user.uid);  // Award points
         }
       }
     });
   
-    return () => unsubscribe(); // Cleanup listener
+    return () => unsubscribe();  // Cleanup listener
   }, [referrerId]);
 
+  // Reward the referrer with points
+  const rewardReferrer = async (referrerUid: string) => {
+    console.log("Rewarding referrer:", referrerUid);  // Log the referrer ID
+    try {
+      const referrerDocRef = doc(db, "users", referrerUid);
+      const referrerDocSnap = await getDoc(referrerDocRef);
+  
+      if (referrerDocSnap.exists()) {
+        console.log("Referrer document exists. Incrementing points...");  // Log before updating
+        await updateDoc(referrerDocRef, { points: increment(10) });
+        console.log(`Referrer ${referrerUid} rewarded with 10 points.`);  // Log after update
+      } else {
+        console.log("Referrer document does not exist.");
+      }
+    } catch (error) {
+      console.error("Error rewarding referrer:", error);
+    }
+  };
+
   const awardPointsToNewUser = async (newUserUid: string) => {
+    console.log(`Awarding points to new user: ${newUserUid}`);  // Log user ID
     try {
       const userDocRef = doc(db, "users", newUserUid);
       const userDocSnap = await getDoc(userDocRef);
   
       if (userDocSnap.exists()) {
-        // If the user document exists, increment points by 10
+        console.log("User document exists. Incrementing points...");  // Log before increment
         await updateDoc(userDocRef, { points: increment(10) });
-        console.log(`New user ${newUserUid} rewarded with 10 points.`);
+        console.log(`New user ${newUserUid} rewarded with 10 points.`);  // Log after increment
       } else {
         console.log("User document does not exist.");
       }
@@ -91,6 +114,7 @@ const RefPage: React.FC = () => {
   
       if (userDocSnap.exists()) {
         const data = userDocSnap.data();
+        console.log(`User ${uid} has points:`, data?.points); // Log user points
         setClaimedPoints(data?.points || 0); // Safe access to points
       } else {
         await setDoc(userDocRef, { points: 0 }); // Initialize points if user doesn't exist
@@ -137,26 +161,6 @@ const RefPage: React.FC = () => {
       return () => unsubscribe();
     }
   }, [user]);
-
-  // Reward the referrer with points
-  const rewardReferrer = async (referrerUid: string) => {
-    try {
-      const referrerDocRef = doc(db, "users", referrerUid);
-      const referrerDocSnap = await getDoc(referrerDocRef);
-  
-      if (referrerDocSnap.exists()) {
-        console.log("Referrer document exists. Incrementing points...");
-        await updateDoc(referrerDocRef, {
-          points: increment(10),  // Increment points by 10
-        });
-        console.log(`Referrer ${referrerUid} rewarded with 10 points.`);
-      } else {
-        console.log("Referrer document does not exist.");
-      }
-    } catch (error) {
-      console.error("Error rewarding referrer:", error);
-    }
-  };
   
   // Sync points to Firestore and localStorage
 useEffect(() => {
