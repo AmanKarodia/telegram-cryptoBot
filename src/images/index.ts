@@ -37,6 +37,7 @@ import Financial  from "./Financial-Management.jpeg";
 import time  from "./time.png";
 import MEME_COIN from "./MEME_COIN.png";
 import Ref1 from "./re1.jpg";
+import Bcoin from "./Bcoin.jpg";
 
 
 
@@ -80,5 +81,6 @@ export {
     time,
     MEME_COIN,
     Ref1,
+    Bcoin,
 
 };

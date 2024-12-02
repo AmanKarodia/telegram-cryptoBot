@@ -1,5 +1,5 @@
 import './ActivitiesPage.css'
-import { Activities, Earn, LuckyWin, memeCoin, mine, Ref1, rightArrow, telegarmicon, usercomments, Wallet, xicon, youtubeicon } from '../images';
+import { Activities, Bcoin, Earn, LuckyWin, memeCoin, mine, Ref1, rightArrow, telegarmicon, usercomments, Wallet, xicon, youtubeicon } from '../images';
 import { useNavigate } from 'react-router-dom';
 import React, { useState, useEffect } from 'react';
 
@@ -19,10 +19,12 @@ const ActivitiesPage: React.FC = () => {
   const [isVerified2, setIsVerified2] = useState(false);
   const [isVerified3, setIsVerified3] = useState(false);
   const [isVerified4, setIsVerified4] = useState(false);
+  const [isVerified5, setIsVerified5] = useState(false);
   const [rewardMessage1, setRewardMessage1] = useState('');
   const [rewardMessage2, setRewardMessage2] = useState('');
   const [rewardMessage3, setRewardMessage3] = useState('');
   const [rewardMessage4, setRewardMessage4] = useState('');
+  const [rewardMessage5, setRewardMessage5] = useState('');
 
   const rewardPoints = {
     reward1: 100,
@@ -50,6 +52,11 @@ const ActivitiesPage: React.FC = () => {
     return saved !== null ? JSON.parse(saved) : false;
   });
 
+  const [isNewSubscribe5, setIsNewSubscribe5] = useState(() => {
+    const saved = localStorage.getItem('isNewSubscribe5');
+    return saved !== null ? JSON.parse(saved) : false;
+  });
+
   useEffect(() => {
     localStorage.setItem("claimedPoints", claimedPoints.toString());
   }, [claimedPoints]);
@@ -70,6 +77,10 @@ const ActivitiesPage: React.FC = () => {
   useEffect(() => {
     localStorage.setItem('isNewSubscribe4', JSON.stringify(isNewSubscribe4));
   }, [isNewSubscribe4]);
+
+  useEffect(() => {
+    localStorage.setItem('isNewSubscribe5', JSON.stringify(isNewSubscribe5));
+  }, [isNewSubscribe5]);
   
 
   const addPoints = (rewardKey: string, setRewardMessage: React.Dispatch<React.SetStateAction<string>>) => {
@@ -291,6 +302,37 @@ const ActivitiesPage: React.FC = () => {
             </div>
             </div>
 
+        {/* Task Card 5 - ref2 */}
+        <div className="bg-[#272a2f] p-4 mb-4 rounded-lg flex flex-col sm:flex-row justify-between items-start sm:items-center">
+          <div className="flex items-center space-x-4 mb-4 sm:mb-0">
+            <img src={Bcoin} alt="YouTube" className="w-8 h-8" />
+            <div>
+              <p className="text-sm md:text-base">Join Bcoin2048 to earn more</p>
+              <p className="text-yellow-400 text-xs md:text-sm">+200</p>
+            </div>
+          </div>
+          <div className="flex space-x-2 flex-wrap px-12">
+          <button
+             disabled={isNewSubscribe5} 
+             onClick={() => {
+              window.open("https://t.me/Bcoin2048bot/app?startapp=utm_prtnr_thoughgoldbull", "_blank");
+              setIsNewSubscribe4(true);
+              verifyTaskWithoutPassword("reward2", setRewardMessage5, setIsVerified5);
+            }}
+             className=" text-yellow-400 hover:text-white border border-yellow-400 hover:bg-yellow-500 focus:ring-4 focus:outline-none focus:ring-yellow-300 font-medium text-center mb-2 px-3 py-1 rounded text-xs sm:text-sm dark:border-yellow-300 dark:text-yellow-300 dark:hover:text-white dark:hover:bg-yellow-400 dark:focus:ring-yellow-900"
+            >
+              {isNewSubscribe5 ? "Completed" : "Perform"}
+            </button>
+            {/* <button
+            disabled={isVerified4} 
+            onClick={() => verifyTask("", "reward2", setRewardMessage4, setIsVerified4)}
+            className=" text-yellow-400 hover:text-white border border-yellow-400 hover:bg-yellow-500 focus:ring-4 focus:outline-none focus:ring-yellow-300 font-medium text-center mb-2 px-3 py-1 rounded text-xs sm:text-sm dark:border-yellow-300 dark:text-yellow-300 dark:hover:text-white dark:hover:bg-yellow-400 dark:focus:ring-yellow-900"
+            >
+              {isVerified4 ? "Verified" : "Verify"}
+            </button> */}
+            </div>
+            </div>
+
             {rewardMessage1 && (
                 <div className="flex fixed top-0 left-0 w-[100%] h-[100%] bg-[rgba(0,0,0,0.5)] items-center justify-center">
               <div className= "content ">
@@ -329,6 +371,16 @@ const ActivitiesPage: React.FC = () => {
                 <div className="bg-[#272a2f] rounded-lg max-w-52 p-10 text-center">
                     {rewardMessage4}
                     <button onClick={() => setRewardMessage4("")} className="mt-4 border-[2px] px-2 border-yellow-400 dark:hover:bg-yellow-400 rounded ">Okay</button>
+                </div>
+              </div>
+              </div>
+              )}
+            {rewardMessage5 && (
+                <div className="flex fixed top-0 left-0 w-[100%] h-[100%] bg-[rgba(0,0,0,0.5)] items-center justify-center">
+              <div className= "content ">
+                <div className="bg-[#272a2f] rounded-lg max-w-52 p-10 text-center">
+                    {rewardMessage5}
+                    <button onClick={() => setRewardMessage5("")} className="mt-4 border-[2px] px-2 border-yellow-400 dark:hover:bg-yellow-400 rounded ">Okay</button>
                 </div>
               </div>
               </div>
