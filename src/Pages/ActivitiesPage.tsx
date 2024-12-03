@@ -333,16 +333,7 @@ const ActivitiesPage: React.FC = () => {
               </div>
               </div>
               )}
-            {rewardMessage5 && (
-                <div className="flex fixed top-0 left-0 w-[100%] h-[100%] bg-[rgba(0,0,0,0.5)] items-center justify-center">
-              <div className= "content ">
-                <div className="bg-[#272a2f] rounded-lg max-w-52 p-10 text-center">
-                    {rewardMessage5}
-                    <button onClick={() => setRewardMessage5("")} className="mt-4 border-[2px] px-2 border-yellow-400 dark:hover:bg-yellow-400 rounded ">Okay</button>
-                </div>
-              </div>
-              </div>
-              )}
+           
           </div>
 
       {/* Bottom fixed div */}
