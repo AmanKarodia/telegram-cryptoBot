@@ -10,7 +10,7 @@ import SettingsPage from './Pages/SettingsPage.tsx';
 import LuckyWinPage from './Pages/Spin/LuckyWinPage.tsx';
 //import SpecialsPage from './Pages/Specials/SpecialsPage.tsx';
 import './index.css';
-//import BussinessPage from './Pages/Bussiness/BussinessPage.tsx';
+import BussinessPage from './Pages/Bussiness/BussinessPage.tsx';
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
 
@@ -24,7 +24,7 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
         <Route path="/MinePage" element={<MinePage />} /> {/* Route for MinePage*/}
         <Route path="/LuckyWinPage" element={<LuckyWinPage />} /> {/* Route for LuckyWinPage */}
         {/* <Route path="/SpecialsPage" element={<SpecialsPage />} /> Route for LuckyWinPage */}
-        {/* <Route path="/BussinessPage" element={<BussinessPage />} /> Route for MinePageBussiness */}
+        <Route path="/BussinessPage" element={<BussinessPage />} /> {/*Route for MinePageBussiness*/}
         <Route path="/SettingsPage" element={<SettingsPage />} /> {/* Route for SettingsPage */}
       </Routes>
     </Router>

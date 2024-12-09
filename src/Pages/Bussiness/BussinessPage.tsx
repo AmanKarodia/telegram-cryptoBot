@@ -142,7 +142,7 @@ const BusinessPage: React.FC = () => {
             </div>
 
         {/* Card Section */}
-        <div className="p-4 grid grid-cols-2 gap-4 mb-20">
+        <div className="p-2 grid grid-cols-2 gap-4 mb-20">
         {/* Card 1: Leadership */}
         <div className="bg-[#2b2b2b] p-5 rounded-2xl text-center max-w-xs sm:max-w-sm md:max-w-md lg:max-w-lg mx-auto">
         {/* Icon */}
@@ -153,7 +153,7 @@ const BusinessPage: React.FC = () => {
         />
 
         {/* Title */}
-        <h2 className="mt-5 text-[20px] sm:text-[24px] text-white">Patience</h2>
+        <h2 className="mt-5 text-[15px] sm:text-[20px] text-white">Patience</h2>
 
         {/* Profit per hour */}
         <p className="text-gray-400 flex justify-center items-center mt-1 space-x-2 text-[12px]">
@@ -217,10 +217,10 @@ const BusinessPage: React.FC = () => {
           <p className="mt-1">Activities</p>
         </button>
         </div>
-        <div className="text-center text-[#85827d] w-1/5">
+        {/* <div className="text-center text-[#85827d] w-1/5">
           <img src={Wallet} alt="Wallet" className="w-8 h-8 mx-auto" />
           <p className="mt-1">Wallet</p>
-        </div>
+        </div> */}
         </div>
         </div>
 

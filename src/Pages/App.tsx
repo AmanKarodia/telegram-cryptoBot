@@ -5,9 +5,10 @@ import Info from '../icons/Info';
 import Settings from '../icons/Settings';
 import { useNavigate } from 'react-router-dom';
 import { getNextResetTime, shouldResetClicks, initializeResetTime, } from '../utils/timerUtils';
-import { getAuth, onAuthStateChanged } from "firebase/auth";
+import { getAuth, onAuthStateChanged, signInAnonymously } from "firebase/auth";
 import { doc, getDoc, setDoc, updateDoc } from "firebase/firestore";
 import { db } from "./firebase"; // Adjust path to your Firebase config
+
 
 
 
@@ -199,69 +200,85 @@ const App: React.FC = () => {
     return () => clearInterval(interval);
   }, [resetTime]);
 
-  // Monitor Firebase authentication state
   useEffect(() => {
     const auth = getAuth();
+  
+    // Sign in anonymously if no user is logged in
     const unsubscribe = onAuthStateChanged(auth, (firebaseUser) => {
-      setUser(firebaseUser);
+      if (!firebaseUser) {
+        signInAnonymously(auth)
+          .then((userCredential) => {
+            console.log("User signed in anonymously:", userCredential.user.uid);
+          })
+          .catch((error) => {
+            console.error("Error signing in anonymously:", error);
+          });
+      } else {
+        setUser(firebaseUser);
+      }
     });
+  
     return () => unsubscribe();
   }, []);
 
   // Load points from Firestore and sync with localStorage
-  useEffect(() => {
-    const loadPointsFromFirestore = async () => {
-      if (user) {
-        const userDocRef = doc(db, "users", user.uid);
-
-        try {
-          const userDoc = await getDoc(userDocRef);
-
-          if (userDoc.exists()) {
-            const points = userDoc.data()?.points || 0;
-
-            // Sync Firestore points with local state and localStorage
-            setClaimedPoints(points);
-            localStorage.setItem("claimedPoints", points.toString());
-          } else {
-            // Create a new document if it doesn't exist
-            await setDoc(userDocRef, { points: 0 });
-            setClaimedPoints(0);
-            localStorage.setItem("claimedPoints", "0");
-          }
-        } catch (error) {
-          console.error("Error loading points from Firestore:", error);
-        }
-      }
-    };
-
-    loadPointsFromFirestore();
-  }, [user]);
-
-    // Sync claimedPoints to Firestore and localStorage
-  useEffect(() => {
-    const syncPointsToFirestore = async () => {
-      if (user) {
-        const userDocRef = doc(db, "users", user.uid);
-        try {
-          await updateDoc(userDocRef, { points: claimedPoints });
-          localStorage.setItem("claimedPoints", claimedPoints.toString());
-        } catch (error) {
-          console.error("Error syncing points to Firestore:", error);
-        }
-      }
-    };
-
+useEffect(() => {
+  const loadPointsFromFirestore = async () => {
     if (user) {
-      syncPointsToFirestore();
+      const userDocRef = doc(db, "users", user.uid);
+
+      try {
+        const userDoc = await getDoc(userDocRef);
+        if (userDoc.exists()) {
+          const data = userDoc.data();
+          const savedPoints = data?.points || 0;
+          const savedTaps = data?.dailyTapsLeft || 1500;
+
+          // Sync Firestore data with local state
+          setClaimedPoints(savedPoints);
+          setDailyTapsLeft(savedTaps);
+
+          // Sync with localStorage
+          localStorage.setItem("claimedPoints", savedPoints.toString());
+          localStorage.setItem("dailyTapsLeft", savedTaps.toString());
+        } else {
+          // Create a new Firestore document
+          await setDoc(userDocRef, { points: 0, dailyTapsLeft: 1500 });
+        }
+      } catch (error) {
+        console.error("Error loading data from Firestore:", error);
+      }
     }
-  }, [claimedPoints, user]);
+  };
+
+  loadPointsFromFirestore();
+}, [user]);
+
+  // Sync claimedPoints and dailyTapsLeft to Firestore
+useEffect(() => {
+  const syncToFirestore = async () => {
+    if (user) {
+      const userDocRef = doc(db, "users", user.uid);
+
+      try {
+        await updateDoc(userDocRef, {
+          points: claimedPoints,
+          dailyTapsLeft,
+        });
+      } catch (error) {
+        console.error("Error syncing data to Firestore:", error);
+      }
+    }
+  };
+
+  syncToFirestore();
+}, [claimedPoints, dailyTapsLeft, user]);
+
 
   // Example function to add points
   const addPoints = (amount: number) => {
     setClaimedPoints((prev) => prev + amount);
   };
-  
 
   return (
     <div className="bg-black flex justify-center">
