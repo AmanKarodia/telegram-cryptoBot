@@ -144,14 +144,14 @@ const ActivitiesPage: React.FC = () => {
           <p className="translate-x-2">Tasks</p>
         </button>
       </div>
-
-      <div className="border-solid border-2 border-[#444444] rounded-lg flex-1 py-2 text-center hover:bg-transparent active:bg-gray-500 focus:outline-none text-white relative sm:py-4 sm:text-base text-sm"> 
+    {/* only open when videos for yt is avaliable */}
+      {/* <div className="border-solid border-2 border-[#444444] rounded-lg flex-1 py-2 text-center hover:bg-transparent active:bg-gray-500 focus:outline-none text-white relative sm:py-4 sm:text-base text-sm"> 
         <button onClick={() => navigate('/VideoPage')} >
           <div className="dot232"></div>
           <img src={youtubeicon} alt="Videos" className="w-6 h-6 absolute left-3 top-1/2 transform -translate-y-1/2 sm:left-8" />
           <p className="translate-x-2">Videos</p>
         </button>
-      </div>
+      </div> */}
 
       <div className="border-solid border-2 border-[#444444] rounded-lg flex-1 py-2 text-center hover:bg-transparent active:bg-gray-500 focus:outline-none text-white relative sm:py-4 sm:text-base text-sm">
         <button onClick={() => navigate('/RefPage')}>
