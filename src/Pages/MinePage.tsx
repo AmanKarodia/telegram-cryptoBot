@@ -113,7 +113,7 @@ const MinePage: React.FC = () => {
           localStorage.setItem("claimedPoints", updatedPoints.toString());
     
           // Increase daily taps by 100
-          const updatedDailyTaps = currentDailyTaps + 100;
+          const updatedDailyTaps = currentDailyTaps + 50;
           localStorage.setItem("dailyTapsLeft", updatedDailyTaps.toString());
     
           // Increment level
@@ -143,9 +143,9 @@ const MinePage: React.FC = () => {
           setClaimedPoints(updatedClaimedPoints);
           localStorage.setItem("claimedPoints", updatedClaimedPoints.toString());
       
-          // Increase coin collection by 1
-          const updatedPointsToAdd = pointsToAdd + 1;
-          setPointsToAdd(updatedPointsToAdd);
+          // Increase coin collection by 0.1
+          const updatedPointsToAdd = (parseFloat(pointsToAdd) + 0.1).toFixed(2);
+          setPointsToAdd(parseFloat(updatedPointsToAdd)); // Ensure it's still a number
           localStorage.setItem("PointsToAdd", updatedPointsToAdd.toString());
           console.log("Updated PointsToAdd:", updatedPointsToAdd); // Debug log
       
@@ -248,7 +248,7 @@ const MinePage: React.FC = () => {
         <p className="text-gray-400 flex justify-center items-center mt-1 space-x-2 text-[12px]">
           <span className="text-[12px]">Upgarde Coin Collection </span>
           <img src={MEME_COIN} alt="Dollar Coin" className="w-[15px] h-[15px]" />
-          <span>+1</span>
+          <span>+0.1</span>
         </p>
 
         {/* Divider */}
@@ -286,7 +286,7 @@ const MinePage: React.FC = () => {
         <p className="text-gray-400 flex justify-center items-center mt-1 space-x-2 text-[12px]">
           <span className="text-[12px]">Increase Clicks</span>
           <img src={MEME_COIN} alt="Dollar Coin" className="w-[15px] h-[15px]" />
-          <span>+100</span>
+          <span>+50</span>
         </p>
 
         {/* Divider */}
@@ -333,10 +333,12 @@ const MinePage: React.FC = () => {
           <img src={Activities} alt="Activities" className="w-8 h-8 mx-auto" />
           <p className="mt-1">Activities</p></button>
         </div>
-        {/* <div className="text-center text-[#85827d] w-1/5">
+        <div className="text-center text-[#85827d] w-1/5">
+          <button onClick={() => navigate('/WalletPage')}>
           <img src={Wallet} alt="Wallet" className="w-8 h-8 mx-auto" />
           <p className="mt-1">Wallet</p>
-        </div> */}
+          </button>
+        </div>
         </div>
         </div>
 

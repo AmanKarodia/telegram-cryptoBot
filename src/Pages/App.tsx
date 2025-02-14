@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import './App.css'
-import { Activities, binanceLogo, dailyReward, dollarCoin, Earn, LuckyWin, MEME_COIN, memeCoin, mine, time } from '../images';
+import { Activities, binanceLogo, dailyReward, dollarCoin, Earn, LuckyWin, MEME_COIN, memeCoin, mine, time, Wallet } from '../images';
 import Info from '../icons/Info';
 import Settings from '../icons/Settings';
 import { useNavigate } from 'react-router-dom';
@@ -114,12 +114,12 @@ const App: React.FC = () => {
         card.style.transform = '';
       }, 100);
 
-      // Increase coin collection by 1
+      //figue out how to Increase coin collection by 0.1
       const updatedPointsToAdd = pointsToAdd;
       setPointsToAdd(updatedPointsToAdd);
       localStorage.setItem("PointsToAdd", updatedPointsToAdd.toString());
 
-    
+
       // Update points and track the click position
       setPoints(points + pointsToAdd)
       setPointsToAdd(updatedPointsToAdd);
@@ -131,11 +131,12 @@ const App: React.FC = () => {
     };
 
     // Handle "Claim" button click
- const handleClaimClick = () => {
-    if (claimedPoints >= 0) {
-      setClaimedPoints((prevPoints) => prevPoints + pointsToAdd);
-    }
-  };
+    const handleClaimClick = () => {
+        if (claimedPoints >= 0) {
+          setClaimedPoints((prevPoints) => prevPoints + pointsToAdd);
+          setPoints(0); // Reset total points
+        }
+      };
 
   // const handleClaimClick = () => {
   //   if (points > 0) {
@@ -406,10 +407,12 @@ useEffect(() => {
           <p className="mt-1">Activities</p>
         </button>
         </div>
-        {/* <div className="text-center text-[#85827d] w-1/5">
+        <div className="text-center text-[#85827d] w-1/5">
+          <button onClick={() => navigate('/WalletPage')}>
           <img src={Wallet} alt="Wallet" className="w-8 h-8 mx-auto" />
           <p className="mt-1">Wallet</p>
-        </div> */}
+          </button>
+        </div>
       </div>
 
       {clicks.map((click) => (

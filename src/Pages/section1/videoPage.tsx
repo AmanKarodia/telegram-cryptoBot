@@ -1,4 +1,4 @@
-import { Activities, Earn, LuckyWin, mine, rightArrow, Wallet, youtubeicon, usercomments, memeCoin, MEME_COIN } from '../../images';
+import { Activities, Earn, LuckyWin, mine, rightArrow, Wallet, youtubeicon, usercomments, MEME_COIN } from '../../images';
 import { useNavigate } from 'react-router-dom';
 import React, { useState, useEffect } from 'react';
 
@@ -258,10 +258,12 @@ const VideoPage: React.FC = () => {
             <img src={Activities} alt="Activities" className="w-8 h-8 mx-auto" />
             <p className="mt-1">Activities</p></button>
           </div>
-          {/* <div className="text-center text-[#85827d] w-1/5">
+          <div className="text-center text-[#85827d] w-1/5">
+            <button onClick={() => navigate('/WalletPage')}>
             <img src={Wallet} alt="Wallet" className="w-8 h-8 mx-auto" />
             <p className="mt-1">Wallet</p>
-          </div> */}
+            </button>
+          </div>
         </div>
       </div>
     );

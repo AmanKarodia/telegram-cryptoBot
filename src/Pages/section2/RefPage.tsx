@@ -294,8 +294,10 @@ useEffect(() => {
             <p className="mt-1">Activities</p>
           </div>
           <div className="text-center text-[#85827d] w-1/5">
+            <button onClick={() => navigate('/WalletPage')}>
             <img src={Wallet} alt="Wallet" className="w-8 h-8 mx-auto" />
             <p className="mt-1">Wallet</p>
+            </button>
           </div>
         </div>
         </div>

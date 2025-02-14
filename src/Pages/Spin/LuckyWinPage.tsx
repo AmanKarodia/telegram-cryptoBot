@@ -104,12 +104,9 @@ const LuckyWinPage = () => {
 
     if (reel1 === reel2 && reel2 === reel3) {
       resultElement.innerText = '🎉 You win! 🎉';
-      rewardElement.innerText = 'Reward: 500 Coins!';
-      setPoints(points + 500);
-    } else if (reel1 === reel2 || reel2 === reel3 || reel1 === reel3) {
-      resultElement.innerText = '✨ Almost there! ✨';
-      rewardElement.innerText = 'Reward: 100 Coins!';
-      setPoints(points + 100);
+      rewardElement.innerText = 'Reward: 0.1 Coins!';
+      setPoints(points + 0.5);
+    
     } else {
       resultElement.innerText = 'Try again!';
       rewardElement.innerText = '';
@@ -238,10 +235,10 @@ const LuckyWinPage = () => {
            <img src={Activities} alt="Activities" className="w-8 h-8 mx-auto" />
            <p className="mt-1">Activities</p></button>
          </div>
-         {/* <div className="text-center text-[#85827d] w-1/5">
+         <div className="text-center text-[#85827d] w-1/5">
            <img src={Wallet} alt="Wallet" className="w-8 h-8 mx-auto" />
            <p className="mt-1">Wallet</p>
-         </div> */}
+         </div>
        </div>
       </div>
     </div>
