@@ -1,0 +1,55 @@
+{
+  "name": "telegram-miniapp",
+  "version": "1.0.0",
+  "description": "This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.",
+  "homepage": "https://github.com/AmanKarodia/telegram-cryptoBot#readme",
+  "bugs": {
+    "url": "https://github.com/AmanKarodia/telegram-cryptoBot/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AmanKarodia/telegram-cryptoBot.git"
+  },
+  "license": "ISC",
+  "author": "",
+  "type": "commonjs",
+  "main": "eslint.config.js",
+  "scripts": {
+    "dev": "vite",
+    "start": "npm run dev"
+  },
+  "keywords": [],
+  "dependencies": {
+    "@eslint/js": "^9.20.0",
+    "@tailwindcss/vite": "^4.0.6",
+    "@ton/ton": "^15.2.1",
+    "@tonconnect/sdk": "^3.0.6",
+    "@tonconnect/ui": "^2.0.11",
+    "@tonconnect/ui-react": "^2.0.11",
+    "@types/jest": "^29.5.14",
+    "@types/node": "^22.13.4",
+    "@types/react-dom": "^19.0.3",
+    "@types/react-router-dom": "^5.3.3",
+    "@vitejs/plugin-react": "^4.3.4",
+    "buffer": "^6.0.3",
+    "css-loader": "^7.1.2",
+    "dotenv": "^16.4.7",
+    "eslint": "^9.20.1",
+    "eslint-plugin-react-hooks": "^5.1.0",
+    "express": "^4.21.2",
+    "firebase": "^11.3.1",
+    "process": "^0.11.10",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "react-router-dom": "^7.1.5",
+    "style-loader": "^4.0.0"
+  },
+  "devDependencies": {
+    "@tailwindcss/postcss": "^4.0.6",
+    "autoprefixer": "^10.4.20",
+    "postcss": "^8.5.2",
+    "tailwindcss": "^4.0.6",
+    "vite": "^6.1.0",
+    "vite-plugin-node-polyfills": "^0.23.0"
+  }
+}

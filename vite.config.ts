@@ -3,9 +3,13 @@ import react from '@vitejs/plugin-react';
 
 export default defineConfig({
   plugins: [react()],
-  css: {
-    preprocessorOptions: {
-      // Add any necessary preprocessor options here
+  define: {
+    'process.env': {},
+  },
+  resolve: {
+    alias: {
+      process: 'process/browser',
+      buffer: 'buffer',
     },
   },
 });
