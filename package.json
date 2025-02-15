@@ -23,10 +23,6 @@
   "dependencies": {
     "@tailwindcss/postcss": "^4.0.0-alpha.13",
     "@tailwindcss/vite": "^4.0.6",
-    "@tonconnect/sdk": "^3.0.6",
-    "@tonconnect/ui": "^2.0.11",
-    "@tonconnect/ui-react": "^2.0.11",
-    "@townsquarelabs/ui-vue": "^2.0.11-beta.0",
     "@types/firebase": "^2.4.32",
     "@types/jest": "^29.5.14",
     "@types/node": "^22.13.4",
