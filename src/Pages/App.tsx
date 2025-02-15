@@ -41,9 +41,12 @@ const App: React.FC = () => {
     1000000000// Lord
   ];
 
+  //const [dailyTapsLeft, setDailyTapsLeft] = useState(1500);
+  const [levelIndex, setLevelIndex] = useState(6);
   const [points, setPoints] = useState(0);
   const [clicks, setClicks] = useState<{ id: number, x: number, y: number }[]>([]);
   const [resetTime, setResetTime] = useState<number>(() => initializeResetTime());
+  //const [claimedPoints, setClaimedPoints] = useState(0); // Points that have been claimed
   const profitPerHour = 100;
   const [user, setUser] = useState<any>(null);
 
@@ -51,11 +54,6 @@ const App: React.FC = () => {
   const [claimedPoints, setClaimedPoints] = useState<number>(() => {
     const savedPoints = localStorage.getItem("claimedPoints");
     return savedPoints ? parseInt(savedPoints, 10) : 0;
-  });
-
-  const [levelIndex, setLevelIndex] = useState(() => {
-    const storedLevelIndex = localStorage.getItem("levelIndex");
-    return storedLevelIndex ? parseInt(storedLevelIndex, 10) : 0;
   });
 
    // Initialize dailyTapsLeft from localStorage or default to 1500
@@ -131,12 +129,12 @@ const App: React.FC = () => {
     };
 
     // Handle "Claim" button click
-    const handleClaimClick = () => {
-        if (claimedPoints >= 0) {
-          setClaimedPoints((prevPoints) => prevPoints + pointsToAdd);
-          setPoints(0); // Reset total points
-        }
-      };
+ const handleClaimClick = () => {
+    if (claimedPoints >= 0) {
+      setClaimedPoints((prevPoints) => prevPoints + pointsToAdd);
+      setPoints(0); // reset points
+    }
+  };
 
   // const handleClaimClick = () => {
   //   if (points > 0) {
@@ -149,28 +147,25 @@ const App: React.FC = () => {
     setClicks((prevClicks) => prevClicks.filter(click => click.id !== id));
   };
 
-   // Function to calculate progress percentage
-   const calculateProgress = () => {
+  const calculateProgress = () => {
     if (levelIndex >= levelNames.length - 1) {
       return 100;
     }
     const currentLevelMin = levelMinPoints[levelIndex];
     const nextLevelMin = levelMinPoints[levelIndex + 1];
     const progress = ((points - currentLevelMin) / (nextLevelMin - currentLevelMin)) * 100;
-    return Math.max(0, Math.min(progress, 100)); // Clamp progress between 0 and 100
+    return Math.min(progress, 100);
   };
-  
-  // Update levelIndex based on points
- useEffect(() => {
+
+  useEffect(() => {
     const currentLevelMin = levelMinPoints[levelIndex];
     const nextLevelMin = levelMinPoints[levelIndex + 1];
-
-    if (claimedPoints >= nextLevelMin && levelIndex < levelNames.length - 1) {
-      setLevelIndex((prevIndex) => prevIndex + 1); // Advance level
-    } else if (claimedPoints < currentLevelMin && levelIndex > 0) {
-      setLevelIndex((prevIndex) => prevIndex - 1); // Drop level
+    if (points >= nextLevelMin && levelIndex < levelNames.length - 1) {
+      setLevelIndex(levelIndex + 1);
+    } else if (points < currentLevelMin && levelIndex > 0) {
+      setLevelIndex(levelIndex - 1);
     }
-  }, [claimedPoints, levelIndex]);
+  }, [points, levelIndex, levelMinPoints, levelNames.length, setLevelIndex]);
 
   const formatProfitPerHour = (profit: number) => {
     if (profit >= 1000000000) return `+${(profit / 1000000000).toFixed(2)}B`;
@@ -178,12 +173,6 @@ const App: React.FC = () => {
     if (profit >= 1000) return `+${(profit / 1000).toFixed(2)}K`;
     return `+${profit}`;
   };
-
-   // Save points and levelIndex to localStorage when they change
-  useEffect(() => {
-    localStorage.setItem("levelIndex", levelIndex);
-    localStorage.setItem("claimedPoints", claimedPoints);
-  }, [levelIndex, claimedPoints]);
 
   useEffect(() => {
     const pointsPerSecond = Math.floor(profitPerHour / 3600);
@@ -197,7 +186,7 @@ const App: React.FC = () => {
    useEffect(() => {
     const interval = setInterval(() => {
       if (shouldResetClicks(resetTime)) {
-        setDailyTapsLeft(500);
+        setDailyTapsLeft(1500);
         const nextResetTime = getNextResetTime();
         setResetTime(nextResetTime);
         localStorage.setItem("resetTime", nextResetTime.toString());
@@ -240,7 +229,7 @@ useEffect(() => {
         if (userDoc.exists()) {
           const data = userDoc.data();
           const savedPoints = data?.points || 0;
-          const savedTaps = data?.dailyTapsLeft || 500;
+          const savedTaps = data?.dailyTapsLeft || 1500;
 
           // Sync Firestore data with local state
           setClaimedPoints(savedPoints);
