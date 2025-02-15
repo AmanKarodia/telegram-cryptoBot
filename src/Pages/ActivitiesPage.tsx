@@ -211,7 +211,7 @@ const ActivitiesPage: React.FC = () => {
           <button
              disabled={isNewSubscribe2} 
              onClick={() => {
-              window.open("https://x.com/though_goldbull", "_blank");
+              window.open("https://x.com/toughgoldbull", "_blank");
               setIsNewSubscribe2(true);
               verifyTaskWithoutPassword("reward1", setRewardMessage2, setIsVerified2);
             }}
