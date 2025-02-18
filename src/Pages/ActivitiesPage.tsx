@@ -242,7 +242,7 @@ const ActivitiesPage: React.FC = () => {
           <button
              disabled={isNewSubscribe3} 
              onClick={() => {
-              window.open("https://www.youtube.com/@ThoughGoldBull", "_blank");
+              window.open("https://www.youtube.com/@ToughGoldBull", "_blank");
               setIsNewSubscribe3(true);
               verifyTaskWithoutPassword("reward2", setRewardMessage3, setIsVerified3);
             }}
