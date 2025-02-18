@@ -14,7 +14,7 @@ import './index.css';
 import { TonConnectUIProvider } from '@tonconnect/ui-react';
 
 // Create TonConnect instance (manifest URL should point to your app's URL)
-const manifestUrl = '../src/Pages/wallet/manifest.json';
+const manifestUrl = 'https://telegram-crypto-bot-five.vercel.app/tonconnect-manifest.json';
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <TonConnectUIProvider manifestUrl={manifestUrl}>
