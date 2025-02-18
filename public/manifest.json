@@ -1,5 +1,5 @@
 {
-    "url": "https://telegram-crypto-bot-five.vercel.app",
+    "url": "https://telegram-crypto-bot-five.vercel.app/tonconnect-manifest.json",
     "name": "ToughGoldBull",
-    "iconUrl": "../src/images/MEME_COIN.png"
+    "iconUrl": "https://telegram-crypto-bot-five.vercel.app/images/MEME_COIN.png"
 }
