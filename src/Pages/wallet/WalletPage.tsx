@@ -3,6 +3,8 @@ import { Activities, binanceLogo, Earn, LuckyWin, mine, Wallet, MEME_COIN, } fro
 import React, { useState, useEffect } from 'react';
 import Settings from '../../icons/Settings';   
 import { TonConnectButton } from '@tonconnect/ui-react';
+
+
 const WalletPage: React.FC = () => {
       const navigate = useNavigate();
       //const pointsToAdd = 2;
@@ -10,11 +12,13 @@ const WalletPage: React.FC = () => {
         const savedPoints = localStorage.getItem("claimedPoints");
         return savedPoints ? parseInt(savedPoints, 10) : 0;
       });
+
       useEffect(() => {
         // Sync state with localStorage changes
         const savedPoints = localStorage.getItem("claimedPoints");
         if (savedPoints) setClaimedPoints(parseInt(savedPoints, 10));
       }, []);
+      
   return (
     <div className="bg-black flex justify-center">
       <div className="w-full bg-black text-white h-screen font-bold flex flex-col max-w-xl">

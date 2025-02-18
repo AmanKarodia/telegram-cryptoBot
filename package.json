@@ -22,7 +22,9 @@
   "dependencies": {
     "@eslint/js": "^9.20.0",
     "@tailwindcss/vite": "^4.0.6",
+    "@ton-api/client": "^0.3.1",
     "@ton/ton": "^15.2.1",
+    "@tonconnect/protocol": "^2.2.6",
     "@tonconnect/sdk": "^3.0.6",
     "@tonconnect/ui": "^2.0.11",
     "@tonconnect/ui-react": "^2.0.11",
@@ -42,7 +44,9 @@
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-router-dom": "^7.1.5",
-    "style-loader": "^4.0.0"
+    "style-loader": "^4.0.0",
+    "ton-client-js": "^0.28.1",
+    "ton-core": "^0.53.0"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4.0.6",
