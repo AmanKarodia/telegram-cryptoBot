@@ -115,9 +115,9 @@ const App: React.FC = () => {
       }, 100);
 
       //figue out how to Increase coin collection by 0.1
-      const updatedPointsToAdd = pointsToAdd;
-      setPointsToAdd(updatedPointsToAdd);
+      const updatedPointsToAdd = (pointsToAdd);
       localStorage.setItem("PointsToAdd", updatedPointsToAdd.toString());
+      console.log("Updated PointsToAdd:", updatedPointsToAdd); // Debug log
 
 
       // Update points and track the click position
@@ -181,8 +181,8 @@ const App: React.FC = () => {
 
    // Save points and levelIndex to localStorage when they change
    useEffect(() => {
-    localStorage.setItem("levelIndex", levelIndex);
-    localStorage.setItem("claimedPoints", claimedPoints);
+    localStorage.setItem("levelIndex", levelIndex.toString());
+    localStorage.setItem("claimedPoints", claimedPoints.toString());
   }, [levelIndex, claimedPoints]);
 
   useEffect(() => {
@@ -282,11 +282,6 @@ useEffect(() => {
   syncToFirestore();
 }, [claimedPoints, dailyTapsLeft, user]);
 
-
-  // Example function to add points
-  const addPoints = (amount: number) => {
-    setClaimedPoints((prev) => prev + amount);
-  };
 
   return (
     <div className="bg-black flex justify-center">

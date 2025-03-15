@@ -104,7 +104,7 @@ const LuckyWinPage = () => {
 
     if (reel1 === reel2 && reel2 === reel3) {
       resultElement.innerText = '🎉 You win! 🎉';
-      rewardElement.innerText = 'Reward: 0.1 Coins!';
+      rewardElement.innerText = 'Reward: 0.5 Coins!';
       setPoints(points + 0.5);
     
     } else {

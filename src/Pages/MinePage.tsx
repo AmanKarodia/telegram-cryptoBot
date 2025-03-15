@@ -1,5 +1,5 @@
 import { useNavigate } from 'react-router-dom';
-import { Activities, Discipline, binanceLogo, Earn, gojo, LuckyWin, mine, one, Wallet, MEME_COIN, } from '../images';
+import { Activities, Discipline, binanceLogo, Earn, LuckyWin, mine, one, Wallet, MEME_COIN, } from '../images';
 import React, { useState, useEffect } from 'react';
 import Settings from '../icons/Settings';   
 
@@ -144,8 +144,8 @@ const MinePage: React.FC = () => {
           localStorage.setItem("claimedPoints", updatedClaimedPoints.toString());
       
           // Increase coin collection by 0.1
-          const updatedPointsToAdd = (parseFloat(pointsToAdd) + 0.1).toFixed(2);
-          setPointsToAdd(parseFloat(updatedPointsToAdd)); // Ensure it's still a number
+          const updatedPointsToAdd = Number((pointsToAdd + 0.1).toFixed(2));
+          setPointsToAdd(updatedPointsToAdd); // Ensure it's still a number
           localStorage.setItem("PointsToAdd", updatedPointsToAdd.toString());
           console.log("Updated PointsToAdd:", updatedPointsToAdd); // Debug log
       
