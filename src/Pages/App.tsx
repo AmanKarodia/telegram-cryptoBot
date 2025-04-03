@@ -133,17 +133,10 @@ const App: React.FC = () => {
     // Handle "Claim" button click
     const handleClaimClick = () => {
         if (claimedPoints >= 0) {
-          setClaimedPoints((prevPoints) => prevPoints + pointsToAdd);
+          setClaimedPoints((prevClaimedPoints) => prevClaimedPoints + points);
           setPoints(0); // Reset total points
         }
       };
-
-  // const handleClaimClick = () => {
-  //   if (points > 0) {
-  //     setClaimedPoints((prevClaimedPoints) => prevClaimedPoints + points); // Add to claimed points // Add points to claimed points
-  //     setPoints(0); // Reset total points
-  //   }
-  // };
 
   const handleAnimationEnd = (id: number) => {
     setClicks((prevClicks) => prevClicks.filter(click => click.id !== id));
@@ -251,7 +244,7 @@ useEffect(() => {
           localStorage.setItem("dailyTapsLeft", savedTaps.toString());
         } else {
           // Create a new Firestore document
-          await setDoc(userDocRef, { points: 0, dailyTapsLeft: 1500 });
+          await setDoc(userDocRef, { points: 0, dailyTapsLeft: 1000 });
         }
       } catch (error) {
         console.error("Error loading data from Firestore:", error);

@@ -99,7 +99,7 @@ const MinePage: React.FC = () => {
       }, []);
 
       const DisciplanehandleCardClick = (cardType: string) => {
-        const currentDailyTaps = parseInt(localStorage.getItem("dailyTapsLeft") || "1500", 10);
+        const currentDailyTaps = parseInt(localStorage.getItem("dailyTapsLeft") || "1000", 10);
     
         if (disciplinelevel >= 10) {
           alert("Maximum level reached! You can't upgrade further.");
@@ -112,7 +112,7 @@ const MinePage: React.FC = () => {
           setClaimedPoints(updatedPoints);
           localStorage.setItem("claimedPoints", updatedPoints.toString());
     
-          // Increase daily taps by 100
+          // Increase daily taps by 50
           const updatedDailyTaps = currentDailyTaps + 50;
           localStorage.setItem("dailyTapsLeft", updatedDailyTaps.toString());
     
@@ -128,7 +128,7 @@ const MinePage: React.FC = () => {
       };
 
       const [pointsToAdd, setPointsToAdd] = useState<number>(() => {
-        return parseInt(localStorage.getItem("PointsToAdd") || "2", 10);
+        return parseInt(localStorage.getItem("PointsToAdd") || "0", 10);
       });
 
       const PatiencehandleCardClick = (cardType: string) => {
@@ -144,7 +144,7 @@ const MinePage: React.FC = () => {
           localStorage.setItem("claimedPoints", updatedClaimedPoints.toString());
       
           // Increase coin collection by 0.1
-          const updatedPointsToAdd = Number((pointsToAdd + 0.1).toFixed(2));
+          const updatedPointsToAdd = pointsToAdd + 1;
           setPointsToAdd(updatedPointsToAdd); // Ensure it's still a number
           localStorage.setItem("PointsToAdd", updatedPointsToAdd.toString());
           console.log("Updated PointsToAdd:", updatedPointsToAdd); // Debug log
@@ -232,7 +232,7 @@ const MinePage: React.FC = () => {
         {/* Card 1: Patience */}
         <div 
         onClick={() => PatiencehandleCardClick("Patience")}
-        className="bg-[#2b2b2b] p-5 rounded-2xl text-center max-w-xs sm:max-w-sm md:max-w-md lg:max-w-lg mx-auto"
+        className="bg-[#444444] p-5 rounded-2xl text-center max-w-xs sm:max-w-sm md:max-w-md lg:max-w-lg mx-auto"
         >
         {/* Icon */}
         <img
@@ -252,10 +252,10 @@ const MinePage: React.FC = () => {
         </p>
 
         {/* Divider */}
-        <div className="h-[1px] bg-[#444444] rounded-lg mt-5"></div>
+        <div className="h-[1px] bg-[#000000] rounded-lg mt-5"></div>
         
         {/* Small line */}
-        <div className="h-[25px] sm:h-[35px] w-[2px] bg-[#43433b] mx-auto mt-2"></div>
+        <div className="h-[25px] sm:h-[35px] w-[2px] bg-[#000000] mx-auto mt-2"></div>
 
         {/* Level and Coin Info */}
         <div className="flex justify-between items-center translate-y-[-1.5rem] sm:translate-y-[-2rem] text-[12px] sm:text-[14px]">
@@ -270,7 +270,7 @@ const MinePage: React.FC = () => {
         {/* Card 2: Discipline */}
         <div 
         onClick={() => DisciplanehandleCardClick("Discipline")}
-        className="bg-[#2b2b2b] p-5 rounded-2xl text-center max-w-xs sm:max-w-sm md:max-w-md lg:max-w-lg mx-auto"
+        className="bg-[#444444] p-5 rounded-2xl text-center max-w-xs sm:max-w-sm md:max-w-md lg:max-w-lg mx-auto"
         >
         {/* Icon */}
         <img
@@ -290,10 +290,10 @@ const MinePage: React.FC = () => {
         </p>
 
         {/* Divider */}
-        <div className="h-[1px] bg-[#444444] rounded-lg mt-5"></div>
+        <div className="h-[1px] bg-[#000000] rounded-lg mt-5"></div>
         
         {/* Small line */}
-        <div className="h-[25px] sm:h-[35px] w-[2px] bg-[#43433b] mx-auto mt-2"></div>
+        <div className="h-[25px] sm:h-[35px] w-[2px] bg-[#000000] mx-auto mt-2"></div>
 
         {/* Level and Coin Info */}
         <div className="flex justify-between items-center translate-y-[-1.5rem] sm:translate-y-[-2rem] text-[12px] sm:text-[14px]">
@@ -312,8 +312,8 @@ const MinePage: React.FC = () => {
 </div>
 
       {/* Bottom Navigation */}
-      <div className="fixed bottom-0 left-1/2 transform -translate-x-1/2 w-[calc(100%-2rem)] max-w-xl bg-[#272a2f] flex justify-around items-center z-50 rounded-3xl text-xs">
-        <div className="text-center text-[#85827d] w-1/5 bg-[#1c1f24] m-1 p-2 rounded-2xl">
+      <div className="fixed bottom-0 left-1/2 transform -translate-x-1/2 w-[calc(100%-2rem)] max-w-xl bg-[#444444] flex justify-around items-center z-50 rounded-3xl text-xs">
+        <div className="text-center text-[#85827d] w-1/5 m-1 p-2 rounded-2xl">
         <button onClick={() => navigate('/')}>
           <img src={Earn} alt="Earn" className="w-8 h-8 mx-auto" />
           <p className="mt-1">Earn</p>
