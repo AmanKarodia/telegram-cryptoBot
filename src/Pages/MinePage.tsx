@@ -214,7 +214,7 @@ const MinePage: React.FC = () => {
           <div className="overflow-y-auto absolute top-[2px] left-0 right-0 bottom-0 bg-[#131313] rounded-t-[46px]">
 
             {/* Tab Menu */}
-            <div className="p-5 rounded-lg flex flex-row sm:flex-row justify-between mb-16 mt-10 border-solid border-1 border-[#444444]">
+            <div className="p-2 rounded-lg flex flex-row sm:flex-row justify-between mb-16 mt-10 border-solid border-1 border-[#444444]">
                 <button className="border-solid border-2 border-[#444444] rounded-lg flex-1 py-2 text-center hover:bg-transparent active:bg-gray-500 focus:outline-none text-white relative sm:py-4 sm:text-base text-sm">
                 <p>Skills</p>
                 </button>

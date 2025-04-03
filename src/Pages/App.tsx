@@ -342,7 +342,7 @@ useEffect(() => {
         <div className="flex-grow mt-4 bg-[#f3ba2f] rounded-t-[48px] relative top-glow z-0">
           <div className="absolute top-[2px] left-0 right-0 bottom-0 bg-[#131313] rounded-t-[46px]">
             <div className="px-4 mt-6 flex justify-between gap-2">
-              <div className="bg-[#272a2f] rounded-lg px-4 py-2 w-full relative">
+              <div className="bg-[#444444] rounded-lg px-4 py-2 w-full relative">
                 <img src={dailyReward} alt="Daily Reward" className="mx-auto w-8 h-8" />
                 <p className="text-[10px] text-center text-white mt-1">Taps Left</p>
                 <p className="text-[10px] font-medium text-center text-gray-400 mt-2">{dailyTapsLeft}</p>
@@ -353,7 +353,7 @@ useEffect(() => {
                 <p className="text-[10px] text-center text-white mt-2">Get Boosters</p>
               </div> */}
 
-              <div className="bg-[#272a2f] rounded-lg px-4 py-3 w-full relative">
+              <div className="bg-[#444444] rounded-lg px-4 py-3 w-full relative">
                 <img src={time} alt="boosters" className="mx-auto w-5 h-5" />
                 <p className="text-[10px] text-center text-white mt-2">clicks regeneration</p>
                 <p className="text-[10px] font-medium text-center text-gray-400 mt-2">{new Date(resetTime).toLocaleString()}</p>
@@ -371,7 +371,7 @@ useEffect(() => {
                   {dailyTapsLeft <= 0 && <p className="absolute text-[20px]">No more taps left for today!</p>}
             </div>
             
-            <div className="bg-[#272a2f] rounded-lg px-4 py-3 w-[75%] flex mx-auto">
+            <div className="bg-[#444444] rounded-lg px-4 py-3 w-[75%] flex mx-auto">
                   <button onClick={handleClaimClick} disabled={points <= 0} type="button" className="mt-1 mx-auto  text-yellow-400 hover:text-white border border-yellow-400 hover:bg-yellow-500 focus:ring-4 focus:outline-none focus:ring-yellow-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2 dark:border-yellow-300 dark:text-yellow-300 dark:hover:text-white dark:hover:bg-yellow-400 dark:focus:ring-yellow-900 ">Claim</button>
               <div className="px-4 py-2 absolute flex space-x-2 ">
                 <p className="text-4xl text-white">{points} <span className="text-[#f3ba2f]">TGB</span></p>
@@ -381,7 +381,7 @@ useEffect(() => {
         </div>
       </div>
       {/* Bottom fixed div */}
-      <div className="fixed bottom-0 left-1/2 transform -translate-x-1/2 w-[calc(100%-2rem)] max-w-xl bg-[#272a2f] flex justify-around items-center z-50 rounded-3xl text-xs">
+      <div className="fixed bottom-0 left-1/2 transform -translate-x-1/2 w-[calc(100%-2rem)] max-w-xl bg-[#444444] flex justify-around items-center z-50 rounded-3xl text-xs">
         <div className="text-center text-[#85827d] w-1/5  m-1 p-2 rounded-2xl">
         <img src={Earn} alt="Earn" className="w-8 h-8 mx-auto" />
           <p className="mt-1">Earn</p>

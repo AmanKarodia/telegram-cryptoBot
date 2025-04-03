@@ -44,7 +44,7 @@ const VideoPage: React.FC = () => {
   
       const watchVideo1 = () => {
           // Open the YouTube video in a new tab
-          window.open("https://www.youtube.com/@moreaj");
+          window.open("https://www.youtube.com/@ToughGoldBull");
 
           // Set video as watched
           setIsVideoWatched1(true);
@@ -52,7 +52,7 @@ const VideoPage: React.FC = () => {
 
       const watchVideo2 = () => {
           // Open the YouTube video in a new tab
-          window.open("https://youtu.be/00lxm_doFYw?si=fq_NqPKAsiCXDbAh");
+          window.open("https://youtu.be/Qef0nKwtsnE?si=b7JhZFelg0H4HR0v");
   
           // Set video as watched
           setIsVideoWatched2(true);
@@ -60,7 +60,7 @@ const VideoPage: React.FC = () => {
 
       const watchVideo3 = () => {
           // Open the YouTube video in a new tab
-          window.open("https://youtu.be/00lxm_doFYw?si=fq_NqPKAsiCXDbAh");
+          window.open("https://youtu.be/QqxffmXWvjo?si=7Pt2h1mXE5TaUrTt");
   
           // Set video as watched
           setIsVideoWatched3(true);
@@ -86,7 +86,7 @@ const VideoPage: React.FC = () => {
           <img src={rightArrow} alt="right" className="w-5 h-5 right242" />
             <span className="ml-2">Daily Checkin</span>
           </div>
-          <div className="flex items-center bg-[#272a2f] px-3 py-1 rounded-full">
+          <div className="flex items-center bg-[#444444] px-3 py-1 rounded-full">
             <img src={MEME_COIN} alt="dollarCoin" className="w-6 h-6 mr-3" />
             <p className="text-yellow-400">{claimedPoints}</p>
           </div>
@@ -120,14 +120,14 @@ const VideoPage: React.FC = () => {
         {/* Social Tasks Section */}
         <div className='p-7'>
         <h2 className="text-[30px] mb-2">Watch & Earn</h2>
-        <p className="text-[20px] mb-4">Watch video ads and earn high token Rewards daily!</p>
+        <p className="text-[20px] mb-4">Watch video ads and earn high token Rewards daily look in comments for the codes!</p>
 
         {/* Task Card 1 - Subscribe to the channel */}
-        <div className="bg-[#272a2f] p-4 mb-4 rounded-lg flex flex-col justify-between items-center">
+        <div className="bg-[#444444] p-4 mb-4 rounded-lg flex flex-col justify-between items-center">
           <div className="flex items-center space-x-4">
             <img src={youtubeicon} alt="Telegram" className="w-8 h-8" />
             <div>
-              <p>Watch and Earn</p>
+              <p>Subscribe to the channel</p>
               <p className="text-yellow-400 text-sm">+1000</p>
             </div>
           </div>
@@ -150,7 +150,7 @@ const VideoPage: React.FC = () => {
         </div>
 
         {/* Task Card 2 - video1 */}
-        <div className="bg-[#272a2f] p-4 mb-4 rounded-lg flex flex-col justify-between items-center">
+        <div className="bg-[#444444] p-4 mb-4 rounded-lg flex flex-col justify-between items-center">
           <div className="flex items-center space-x-4">
             <img src={youtubeicon} alt="X" className="w-8 h-8 mx-auto" />
             <div>
@@ -168,7 +168,7 @@ const VideoPage: React.FC = () => {
             </button>
             <button
             disabled={isVerified2}
-            onClick={() => verifyTask("2222", "reward2", setRewardMessage2, setIsVerified2)}
+            onClick={() => verifyTask("928467", "reward2", setRewardMessage2, setIsVerified2)}
             className=" text-yellow-400 hover:text-white border border-yellow-400 hover:bg-yellow-500 focus:ring-4 focus:outline-none focus:ring-yellow-300 font-medium text-center me-2 mb-2 dark:border-yellow-300 dark:text-yellow-300 dark:hover:text-white dark:hover:bg-yellow-400 dark:focus:ring-yellow-900 px-3 py-1 rounded text-sm"
             >
               {isVerified2 ? "Verifed" : "Verify"}
@@ -177,7 +177,7 @@ const VideoPage: React.FC = () => {
         </div>
 
         {/* Task Card 3 - video2 */}
-        <div className="bg-[#272a2f] p-4 rounded-lg flex flex-col justify-between items-center">
+        <div className="bg-[#444444] p-4 rounded-lg flex flex-col justify-between items-center">
           <div className="flex items-center space-x-4">
             <img src={youtubeicon} alt="YouTube" className="w-8 h-8" />
             <div>
@@ -193,7 +193,7 @@ const VideoPage: React.FC = () => {
             >{isVideoWatched3 ? "Completed" : "Perform"}</button>
             <button
             disabled={isVerified3} 
-            onClick={() => verifyTask("2222", "reward3", setRewardMessage3, setIsVerified3)}
+            onClick={() => verifyTask("281733", "reward3", setRewardMessage3, setIsVerified3)}
             className=" text-yellow-400 hover:text-white border border-yellow-400 hover:bg-yellow-500 focus:ring-4 focus:outline-none focus:ring-yellow-300 font-medium text-center me-2 mb-2 dark:border-yellow-300 dark:text-yellow-300 dark:hover:text-white dark:hover:bg-yellow-400 dark:focus:ring-yellow-900 px-3 py-1 rounded text-sm"
             >
               {isVerified3 ? "Verifed" : "Verify"}
@@ -237,8 +237,8 @@ const VideoPage: React.FC = () => {
       </div>
   
         {/* Bottom fixed div */}
-        <div className="fixed bottom-0 left-1/2 transform -translate-x-1/2 w-[calc(100%-2rem)] max-w-xl bg-[#272a2f] flex justify-around items-center z-50 rounded-3xl text-xs">
-          <div className="text-center text-[#85827d] w-1/5 bg-[#1c1f24] m-1 p-2 rounded-2xl">
+        <div className="fixed bottom-0 left-1/2 transform -translate-x-1/2 w-[calc(100%-2rem)] max-w-xl bg-[#444444] flex justify-around items-center z-50 rounded-3xl text-xs">
+          <div className="text-center text-[#85827d] w-1/5 m-1 p-2 rounded-2xl">
           <button onClick={() => navigate('/')}>
             <img src={Earn} alt="Earn" className="w-8 h-8 mx-auto" />
             <p className="mt-1">Earn</p></button>

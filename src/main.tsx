@@ -12,6 +12,8 @@ import LuckyWinPage from './Pages/Spin/LuckyWinPage.tsx';
 import BussinessPage from './Pages/Bussiness/BussinessPage.tsx';
 import './index.css';
 import { TonConnectUIProvider } from '@tonconnect/ui-react';
+import { Buffer } from 'buffer';
+window.Buffer = Buffer; // Polyfill for browser
 
 // Create TonConnect instance (manifest URL should point to your app's URL)
 const manifestUrl = 'https://telegram-crypto-bot-five.vercel.app/manifest.json';

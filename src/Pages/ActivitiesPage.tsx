@@ -129,7 +129,7 @@ const ActivitiesPage: React.FC = () => {
         <img src={rightArrow} alt="right" className="w-5 h-5 right242" />
           <span className="ml-2">Daily Checkin</span>
         </div>
-        <div className="flex items-center bg-[#272a2f] px-3 py-1 rounded-full">
+        <div className="flex items-center bg-[#444444] px-3 py-1 rounded-full">
           <img src={memeCoin} alt="dollarCoin" className="w-6 h-6 mr-2" />
           <p className="text-yellow-400">{claimedPoints}</p>
         </div>
@@ -168,7 +168,7 @@ const ActivitiesPage: React.FC = () => {
         <p className="text-[16px] mb-4">Perform social tasks to earn more TGB tokens and stay updated!</p>
 
         {/* Task Card 1 - Telegram */}
-        <div className="bg-[#272a2f] p-4 mb-4 rounded-lg flex flex-col sm:flex-row justify-between items-start sm:items-center">
+        <div className="bg-[#444444] p-4 mb-4 rounded-lg flex flex-col sm:flex-row justify-between items-start sm:items-center">
           <div className="flex items-center space-x-4 mb-4 sm:mb-0">
             <img src={telegarmicon} alt="Telegram" className="w-8 h-8" />
             <div>
@@ -199,7 +199,7 @@ const ActivitiesPage: React.FC = () => {
         </div>
 
         {/* Task Card 2 - X */}
-        <div className="bg-[#272a2f] p-4 mb-4 rounded-lg flex flex-col sm:flex-row justify-between items-start sm:items-center">
+        <div className="bg-[#444444] p-4 mb-4 rounded-lg flex flex-col sm:flex-row justify-between items-start sm:items-center">
           <div className="flex items-center space-x-4 mb-4 sm:mb-0">
             <img src={xicon} alt="X" className="w-8 h-8" />
             <div>
@@ -230,7 +230,7 @@ const ActivitiesPage: React.FC = () => {
         </div>
 
         {/* Task Card 3 - YouTube */}
-        <div className="bg-[#272a2f] p-4 mb-4 rounded-lg flex flex-col sm:flex-row justify-between items-start sm:items-center">
+        <div className="bg-[#444444] p-4 mb-4 rounded-lg flex flex-col sm:flex-row justify-between items-start sm:items-center">
           <div className="flex items-center space-x-4 mb-4 sm:mb-0">
             <img src={youtubeicon} alt="YouTube" className="w-8 h-8" />
             <div>
@@ -261,7 +261,7 @@ const ActivitiesPage: React.FC = () => {
             </div>
 
         {/* Task Card 4 - ref1 */}
-        <div className="bg-[#272a2f] p-4 mb-4 rounded-lg flex flex-col sm:flex-row justify-between items-start sm:items-center">
+        <div className="bg-[#444444] p-4 mb-4 rounded-lg flex flex-col sm:flex-row justify-between items-start sm:items-center">
           <div className="flex items-center space-x-4 mb-4 sm:mb-0">
             <img src={Bcoin} alt="YouTube" className="w-8 h-8" />
             <div>
@@ -337,8 +337,8 @@ const ActivitiesPage: React.FC = () => {
           </div>
 
       {/* Bottom fixed div */}
-      <div className="fixed bottom-0 left-1/2 transform -translate-x-1/2 w-[calc(100%-2rem)] max-w-xl bg-[#272a2f] flex justify-around items-center z-50 rounded-3xl text-xs">
-        <div className="text-center text-[#85827d] w-1/5 bg-[#1c1f24] m-1 p-2 rounded-2xl">
+      <div className="fixed bottom-0 left-1/2 transform -translate-x-1/2 w-[calc(100%-2rem)] max-w-xl bg-[#444444] flex justify-around items-center z-50 rounded-3xl text-xs">
+        <div className="text-center text-[#85827d] w-1/5 m-1 p-2 rounded-2xl">
         <button onClick={() => navigate('/')}>
           <img src={Earn} alt="Earn" className="w-8 h-8 mx-auto" />
           <p className="mt-1">Earn</p></button>
